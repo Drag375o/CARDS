@@ -18,6 +18,7 @@ const SCRIPTS = [
   'js/core/registry.js',
   'js/core/engine.js',
   'js/core/tricks.js',
+  'js/core/hands.js',
   'js/art/cardsvg.js',
   'js/art/backs.js',
   'js/art/decks/classic.js',
@@ -71,7 +72,9 @@ for (const f of files) {
 
 let pass = 0;
 let fail = 0;
+const timings = [];
 for (const t of tests) {
+  const t0 = Date.now();
   try {
     t.fn();
     pass++;
@@ -79,6 +82,9 @@ for (const t of tests) {
     fail++;
     console.log('  ✗ ' + t.file + ' › ' + t.name + '\n      ' + e.message);
   }
+  timings.push([Date.now() - t0, t.name]);
 }
+// SLOW=1 node tests/run.js  lists the slowest tests.
+if (process.env.SLOW) timings.sort((a, b) => b[0] - a[0]).slice(0, 8).forEach(([ms, name]) => console.log('  ' + ms + ' ms  ' + name));
 console.log((fail ? '✗' : '✓') + ' ' + pass + ' passed, ' + fail + ' failed (' + files.length + ' files)');
 process.exit(fail ? 1 : 0);
