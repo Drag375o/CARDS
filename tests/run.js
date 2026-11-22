@@ -15,6 +15,7 @@ const ROOT = path.join(__dirname, '..');
 // Engine scripts only (no DOM). Keep in step with index.html.
 const SCRIPTS = [
   'js/core/cards.js',
+  'js/core/registry.js',
   'js/art/cardsvg.js',
   'js/art/backs.js',
   'js/art/decks/classic.js',

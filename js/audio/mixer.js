@@ -202,7 +202,8 @@
 
   C52.Mixer = {
     ensure,
-    ready: () => !!M.ctx && M.ctx.state === 'running',
+    // A context still resuming counts as ready: sounds scheduled now play the moment it starts.
+    ready: () => !!M.ctx && M.ctx.state !== 'closed',
     get ctx() { return M.ctx; },
     get noise() { return M.noise; },
     bus: (name) => M.bus[name],
