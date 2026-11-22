@@ -11,6 +11,7 @@
     fourColour: false,
     largeIndex: false,
     reducedMotion: false,
+    pace: 1, // computer players' thinking time: 1.5 relaxed, 1 normal, 0.55 brisk
     name: '',
     volume: { master: 0.8, fx: 0.9, music: 0.6, ambience: 0.35 },
     muted: false,

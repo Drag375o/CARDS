@@ -169,7 +169,11 @@
       <h3>Readability</h3>
       ${toggle('fourColour', 'Four-colour suits')}
       ${toggle('largeIndex', 'Large corner indices')}
-      ${toggle('reducedMotion', 'Reduce motion')}` +
+      ${toggle('reducedMotion', 'Reduce motion')}
+      <h3>Computer players</h3>
+      <div class="choices" style="grid-template-columns:repeat(3,1fr)">${[[1.5, 'Relaxed'], [1, 'Normal'], [0.55, 'Brisk']]
+        .map(([v, l]) => `<button class="choice" data-pace="${v}" ${pressed((p.pace || 1) === v)}><span class="label" style="margin:0">${l}</span></button>`)
+        .join('')}</div>` +
       drawerSections.map((fn) => fn(p)).join('');
 
     d.querySelector('.close').onclick = () => toggleDrawer(false);
@@ -177,6 +181,7 @@
     d.querySelectorAll('[data-deck]').forEach((b) => (b.onclick = () => pick({ deck: b.dataset.deck })));
     d.querySelectorAll('[data-back]').forEach((b) => (b.onclick = () => pick({ back: b.dataset.back || null })));
     d.querySelectorAll('[data-pref]').forEach((i) => (i.onchange = () => C52.Prefs.set({ [i.dataset.pref]: i.checked })));
+    d.querySelectorAll('[data-pace]').forEach((b) => (b.onclick = () => pick({ pace: Number(b.dataset.pace) })));
     d.querySelectorAll('[data-wire]').forEach((el) => drawerWires[el.dataset.wire] && drawerWires[el.dataset.wire](el));
   }
   const drawerWires = {};

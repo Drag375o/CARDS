@@ -105,7 +105,7 @@
     const seat = b.querySelector('#take-seat');
     seat.onclick = () => {
       C52.Sound.play('latch');
-      C52.UI.show('table', { game: id });
+      C52.UI.show('seating', { game: id });
     };
     (playable ? seat : b.querySelector('#back-to-hand')).focus();
   }

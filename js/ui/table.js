@@ -105,7 +105,8 @@
         const view = this.engine.view(this.st, seat);
         const level = s.level || 'medium';
         const base = this.ai.delay ? this.ai.delay(view, actions, level, this.rng) : 650 + this.rng() * 550;
-        const ms = base * (root.C52_SPEED || 1); // C52_SPEED: test hook to fast-forward computer players
+        const pace = (C52.Prefs && C52.Prefs.get().pace) || 1;
+        const ms = base * pace * (root.C52_SPEED || 1); // C52_SPEED: test hook to fast-forward computer players
         this.timers.push(
           setTimeout(() => {
             const fresh = this.engine.actions(this.st, seat);
@@ -320,7 +321,9 @@
     hand.innerHTML = '';
     spec.cards.forEach((c, i) => {
       let el = old.get(c);
-      const cls = 'card' + (spec.playable.has(c) ? ' playable' : spec.dim === false ? '' : ' muted') + (R.selection.has(c) ? ' selected' : '');
+      // Dim only when some cards can be played and this one can't; while bidding or waiting the hand stays bright.
+      const dim = spec.dim === false ? false : spec.dim === true || spec.playable.size > 0;
+      const cls = 'card' + (spec.playable.has(c) ? ' playable' : dim ? ' muted' : '') + (R.selection.has(c) ? ' selected' : '');
       if (!el || R.handKey.split('|')[4] !== C52.Prefs.look().deck) {
         const tmp = root.document.createElement('div');
         tmp.innerHTML = C52.Scene.cardHTML(spec.faceDown ? null : c, { faceDown: !!spec.faceDown });
