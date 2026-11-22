@@ -279,3 +279,8 @@
 }
 .suit-badge.sweeping-badge { animation: badge-out 0.35s ease-in forwards; }
 @keyframes badge-out { to { opacity: 0; transform: translate(-50%, -50%) translateY(6px); } }
+
+/* Far-side seats: plaque first, then the info line, then their fan of cards hanging below. */
+.seat.far { transform: translate(-50%, calc(-50% + var(--card-h) * 0.42 + 4px)); } /* keep the plaque where it was */
+.seat.far .mini-hand { order: 3; margin-top: 2px; }
+.seat.far .mini-hand .card { bottom: auto; top: 0; transform-origin: 50% -150%; }
