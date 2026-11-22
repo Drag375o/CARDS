@@ -109,6 +109,7 @@
             const fresh = this.engine.actions(this.st, seat);
             if (!fresh.length) return;
             const a = this.ai.decide(this.engine.view(this.st, seat), fresh, s.level, this.rng);
+            if (a === null) return; // the computer chooses to do nothing (e.g. no slap worth making)
             if (!a || !this.act(seat, a)) this.act(seat, fresh[0]);
           }, ms)
         );

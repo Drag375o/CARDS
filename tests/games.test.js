@@ -22,7 +22,9 @@ function simulate(id, seed, opts) {
       const acts = eng.actions(st, seat);
       if (!acts.length) continue;
       const v = eng.view(st, seat);
-      let a = opts.random ? acts[Math.floor(rng() * acts.length)] : ai.decide(v, acts, levels[(seat + seed) % 3], rng) || acts[0];
+      let a = opts.random ? acts[Math.floor(rng() * acts.length)] : ai.decide(v, acts, levels[(seat + seed) % 3], rng);
+      if (a === null) continue; // this player chooses to wait
+      if (!a) a = acts[0];
       if (a.choose) a = ai.decide(v, acts, 'easy', rng); // "choose N cards" moves come from the computer player
       eng.apply(st, seat, a, rng);
       moved = true;

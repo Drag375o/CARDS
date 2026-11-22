@@ -215,3 +215,8 @@
 
 .trick-card.bj-small { --card-w: clamp(30px, 6.4vmin, 84px); }
 .suit-badge.bj-active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 18px rgba(255, 214, 150, 0.3); }
+
+/* ---------- Egyptian Rat Screw ---------- */
+
+.ers-pile { position: absolute; inset: 22% 30% 30% 30%; cursor: pointer; }
+.ers-pile .slot { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
