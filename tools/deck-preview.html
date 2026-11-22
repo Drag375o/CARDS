@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deck preview</title>
+<style>
+  body { margin: 0; padding: 24px; background: #2b2f2c; font: 14px system-ui, sans-serif; color: #ddd; }
+  .row { display: grid; grid-template-columns: repeat(13, 1fr); gap: 10px; margin-bottom: 14px; }
+  .row svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 2px 3px rgba(0,0,0,.4)); }
+  header { display: flex; gap: 16px; align-items: center; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<header>
+  <label>Deck <select id="deck"></select></label>
+  <label><input type="checkbox" id="four"> Four-colour</label>
+  <label><input type="checkbox" id="large"> Large index</label>
+</header>
+<div id="out"></div>
+<script src="../js/core/cards.js"></script>
+<script src="../js/art/cardsvg.js"></script>
+<script src="../js/art/backs.js"></script>
+<script src="../js/art/decks/classic.js"></script>
+<script>
+  const Art = C52.Art, K = C52.Cards;
+  document.body.insertAdjacentHTML('afterbegin', Art.defs());
+  const params = new URLSearchParams(location.search);
+  const sel = document.getElementById('deck');
+  sel.innerHTML = Art.decks().map((d) => `<option value="${d.id}">${d.name}</option>`).join('');
+  if (params.get('deck')) sel.value = params.get('deck');
+  if (params.has('four')) four.checked = true;
+  function render() {
+    const o = { deck: sel.value, fourColour: four.checked, largeIndex: large.checked };
+    let html = '';
+    for (const s of 'SHDC') html += '<div class="row">' + [...'A23456789TJQK'].map((r) => Art.card(r + s, o)).join('') + '</div>';
+    html += '<div class="row">' + Art.backs().map((b) => Art.card(null, { deck: sel.value, back: b.id })).join('') + '</div>';
+    out.innerHTML = html;
+  }
+  [sel, four, large].forEach((el) => el.addEventListener('change', render));
+  render();
+</script>
+</body>
+</html>
