@@ -2,6 +2,7 @@
  * URL hashes jump straight to a screen (handy when testing):
  *   #menu   the game hand     #brief:klondike   a game's briefing
  *   #seat:crazy8   seating        #play:crazy8&n:4   straight to a table
+ *   #venue:lair  #deck:engraved   switch the look
  *   #house  also open the House drawer */
 (function (root) {
   'use strict';
@@ -19,6 +20,8 @@
 
     const hash = root.location.hash.slice(1).split('&');
     const arg = (k) => (hash.find((h) => h.startsWith(k + ':')) || '').slice(k.length + 1);
+    if (arg('venue')) C52.Prefs.set({ venue: arg('venue') });
+    if (arg('deck')) C52.Prefs.set({ deck: arg('deck') });
     if (arg('seat')) C52.UI.show('seating', { game: arg('seat') });
     else if (arg('play')) {
       // Straight to a table with computer opponents (used for testing).

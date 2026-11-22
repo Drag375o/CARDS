@@ -43,6 +43,7 @@
 .seat.active .plaque { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 26px rgba(255, 214, 150, 0.28); }
 .seat.out .plaque { opacity: 0.45; }
 .seat .info { font: 500 11px var(--font-ui); letter-spacing: 0.1em; color: var(--accent); text-shadow: 0 1px 2px #000; min-height: 14px; }
+.seat .info:not(:empty) { padding: 1px 9px; border-radius: 9px; background: rgba(0, 0, 0, 0.5); }
 .dealer-puck {
   position: absolute; top: -10px; right: -12px; width: 22px; height: 22px; border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #fff, #d9d2c0); color: #222; font: 700 11px/22px var(--font-ui); text-align: center;
