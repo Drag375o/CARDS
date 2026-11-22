@@ -6,6 +6,8 @@ Play solo, against computer opponents, or online with friends using a room code.
 
 The mood is a 1960s spy thriller: low light, green baize, the snap of a fresh deck. You choose the room you play in and the deck you play with, and you can change either at any time, even mid-hand.
 
+> **Play it now:** **https://drag375o.github.io/CARDS/**
+>
 > **Status:** all twelve games are playable against computer opponents and online. Six venues, six decks and seven card backs are available.
 
 ---
@@ -27,6 +29,7 @@ The mood is a 1960s spy thriller: low light, green baize, the snap of a fresh de
 - [Architecture](#architecture)
 - [Testing](#testing)
 - [Hosting](#hosting)
+- [Troubleshooting](#troubleshooting)
 - [Credits](#credits)
 - [Disclaimer](#disclaimer)
 
@@ -226,7 +229,7 @@ Change either from **The House** (the gold "52" button, top right) at any time, 
 |-------|---------|-------|----------|
 | **Riviera Salon** *(default)* | A private room at a 1960s seaside casino | Deep green baize, a mahogany rail with brass inlay, a chandelier glowing overhead | A murmuring room, a distant roulette wheel, chips at other tables, a hushed string quartet |
 | **The Lair** | A villain's private table, carved into volcanic rock | Black glass lit red from below, brushed steel edges | A low machine hum and water dripping in the dark |
-| **Noir '62** | A back room after midnight, in black and white | Worn grey felt crossed by stripes of light through venetian blinds; the whole table is drained of colour | Rain on the window, a ceiling fan, a muted trumpet two floors down |
+| **Noir '62** | A back room after midnight, in black and white | Worn grey felt under a bare bulb, a black lacquer rail; moonlight through venetian blinds falls in stripes across the back wall, never over the cards | Rain on the window, a ceiling fan, a muted trumpet two floors down |
 | **Mayfair Bar** | A modern cocktail bar after closing | Oxblood leather under amber back-lit shelves, a walnut and brass rim | Ice in a glass, a cocktail shaker, low music |
 | **Night Train** | A dining car crossing the Alps | Burgundy velvet and inlaid wood, a swaying lamp, village lights passing the window | The rhythm of the rails and a distant whistle |
 | **The Vault** | A Swiss bank's private room | Pale banknote paper with engraved guilloché rings, a great round steel door | A heavy clock and the hum of the vault |
@@ -460,6 +463,7 @@ CARDS/
 │       ├── online.js          # online rooms, lobby, takeovers, resume/rejoin
 │       └── app.js             # boot and test links
 ├── tools/deck-preview.html    # every card of every deck
+├── .nojekyll                  # tells GitHub Pages to serve files as-is (keep it)
 ├── tests/                     # headless Node tests (no dependencies)
 ├── Rules_Modes.md             # the full rulebook for all 12 games
 └── README.md
@@ -542,8 +546,22 @@ What the tests cover:
 
 The game is a static site, so any static host works.
 
-- **GitHub Pages:** in the repo settings, go to Pages, then *Deploy from branch*, choose `main` and `/ (root)`.
+- **GitHub Pages** (live at https://drag375o.github.io/CARDS/): in the repo settings, go to Pages, then *Deploy from branch*, choose `main` and `/ (root)`. Every push to `main` updates the site within a minute or two.
 - **Netlify:** `npx netlify-cli deploy --prod --dir .`
+
+> The repository includes an empty **`.nojekyll`** file. Keep it: without it, GitHub Pages runs Jekyll, which silently drops files whose names start with an underscore (such as `js/ai/_tricks.js`), and the trick-taking games stop working.
+
+---
+
+## Troubleshooting
+
+| Problem | What to do |
+|---------|------------|
+| Computers don't move, or a game won't respond | Reload the page so the browser fetches the latest version (Ctrl+F5 / Cmd+Shift+R). If something goes wrong, the game now shows the error at the top of the screen — note what it says. |
+| It looks like nothing is happening | Check the hint above the action rail on the right: it's probably your turn (for example, choose three cards to pass in Hearts, or make your bid in Spades). |
+| No sound | Tap or click once: browsers only allow sound after you interact. Check the volumes in The House. If your browser blocks audio entirely, the game plays on silently. |
+| Dragging doesn't work | Dragging is only used in Klondike. In every other game you tap or click cards and use the buttons on the right. |
+| Can't join a friend's table | Online play needs an internet connection. Check the five-letter code; rooms close when the host leaves. |
 
 ---
 
