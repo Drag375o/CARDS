@@ -722,5 +722,5 @@
   const fixYou = (s) => (R.view && R.view.names[R.me] === 'You' ? C52.Engine.youify(s) : s);
 
   C52.Screens.table = { enter, leave, refresh };
-  C52.Table = { seatPos, relSeat, Host, receive, ui, openChooser, closeOverlay, R };
+  C52.Table = { seatPos, relSeat, Host, receive, ui, openChooser, closeOverlay, confirmLeave, R };
 })(window);

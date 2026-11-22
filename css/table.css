@@ -180,7 +180,8 @@
 
 .table.rect { border-radius: 26px / 26px; }
 .table.rect .felt { inset: 2.6%; border-radius: 16px; }
-[data-game='klondike'] .table-wrap { top: 50%; width: min(96vw, 1180px, 150vh); aspect-ratio: 1.42; }
+/* Fit the card table between the top bar and the bottom of the screen. */
+[data-game='klondike'] .table-wrap { top: calc(50% + 22px); width: min(92vw, 1180px, (100vh - 96px) * 1.42); aspect-ratio: 1.42; }
 [data-game='klondike'] { --card-w: clamp(40px, min(8.4vw, 11.6vh), 112px); }
 [data-game='klondike'] .felt-mark { top: 93%; }
 [data-game='klondike'] .rail { bottom: 24px; }

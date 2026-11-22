@@ -105,6 +105,7 @@
         },
       });
       items.push({ label: 'Concede', action: actions.find((a) => a.type === 'concede') });
+      items.push({ label: 'Leave the table', fn: () => C52.Table.confirmLeave() });
       return items;
     },
     rules: `
