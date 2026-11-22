@@ -58,14 +58,18 @@ function hiddenLeak(eng, st, seat) {
   return leaks;
 }
 
+// Games whose computer players are expensive (Monte Carlo) run fewer simulations.
+const RUNS = { holdem: [6, 6] };
+
 for (const g of C52.Games.list()) {
   if (!C52.Games.engine(g.id) || !C52.AI[g.id]) continue;
-  test(g.id + ': 40 computer games finish with every card accounted for', () => {
-    for (let s = 1; s <= 40; s++) simulate(g.id, s, {});
+  const [ai, rnd] = RUNS[g.id] || [40, 40];
+  test(g.id + ': ' + ai + ' computer games finish with every card accounted for', () => {
+    for (let s = 1; s <= ai; s++) simulate(g.id, s, {});
   });
   // Random movers may never finish (they rarely meld or bid well); this checks robustness, not completion.
-  test(g.id + ': 40 random-move games stay legal and keep every card', () => {
-    for (let s = 101; s <= 140; s++) simulate(g.id, s, { random: true, allowUnfinished: true, maxSteps: 3000 });
+  test(g.id + ': ' + rnd + ' random-move games stay legal and keep every card', () => {
+    for (let s = 101; s <= 100 + rnd; s++) simulate(g.id, s, { random: true, allowUnfinished: true, maxSteps: 3000 });
   });
   test(g.id + ": views never show another player's hidden cards", () => {
     const eng = C52.Games.engine(g.id);
