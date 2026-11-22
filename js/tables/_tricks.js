@@ -7,10 +7,13 @@
   const C52 = root.C52;
   const K = C52.Cards;
 
-  const HOLD_MS = 1500;
+  const HOLD_MS = 1500; // a finished trick stays visible this long in all
+  const SWEEP_MS = 480; // ...ending with the cards gliding to the winner and fading
   let shownTrickKey = '';
   let shownAt = 0;
   let timer = 0;
+
+  const tilt = (c) => ((c.charCodeAt(0) * 7 + c.charCodeAt(1) * 3) % 13) - 6; // same as ui.trick
 
   /** Cards to show in the middle: the live trick, or the last finished one for a moment. */
   function trickCards(v, ui) {
@@ -23,12 +26,23 @@
       shownTrickKey = key;
       shownAt = now;
     }
-    if (now - shownAt < HOLD_MS) {
-      clearTimeout(timer);
-      timer = setTimeout(() => ui.rerender(), HOLD_MS - (now - shownAt) + 30);
-      return ui.trick(lt.plays) + `<div class="suit-badge" style="left:50%;top:78%">${ui.name(lt.winner)} takes it</div>`;
-    }
-    return '';
+    const elapsed = now - shownAt;
+    if (elapsed >= HOLD_MS) return '';
+    clearTimeout(timer);
+    timer = setTimeout(() => ui.rerender(), HOLD_MS - elapsed + 30);
+    // The sweep starts after a pause; a redraw mid-way resumes it rather than restarting it.
+    const delay = Math.max(0, HOLD_MS - SWEEP_MS - elapsed);
+    const to = ui.toward(lt.winner, 1.08);
+    const cards = lt.plays
+      .map((p, i) => {
+        const at = ui.toward(p.seat);
+        return (
+          `<div class="trick-card sweeping" style="left:${at.x}%;top:${at.y}%;--rot:${tilt(p.card)}deg;--to-l:${to.x}%;--to-t:${to.y}%;` +
+          `animation-duration:${SWEEP_MS}ms;animation-delay:${delay}ms;z-index:${i + 1}">${ui.card(p.card, { attrs: `data-seat="${p.seat}"` })}</div>`
+        );
+      })
+      .join('');
+    return cards + `<div class="suit-badge sweeping-badge" style="left:50%;top:78%;animation-delay:${delay}ms">${ui.name(lt.winner)} takes it</div>`;
   }
 
   /** Trump indicator: the turned card in a corner of the felt. */

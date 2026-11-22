@@ -18,7 +18,7 @@
   }
 
   // Shown in The House, so it's easy to check which version a browser is running.
-  C52.VERSION = '2026.11.23c';
+  C52.VERSION = '2026.11.23d';
 
   function boot() {
     showErrors();
