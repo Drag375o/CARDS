@@ -344,7 +344,7 @@
         .filter(({ a }) => !a.card && a.type !== 'next')
         .map(({ a }) => ({ label: T.label ? T.label(a) : a.type, action: a }));
     }
-    const hint = T.hint ? T.hint(R.view, R.actions) : '';
+    const hint = T.hint ? fixYou(T.hint(R.view, R.actions, ui)) : '';
     R.railItems = items || [];
     $('#rail').innerHTML =
       (hint ? `<div class="hint">${hint}</div>` : '') +
