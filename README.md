@@ -22,7 +22,8 @@ The mood is a 1960s spy thriller: low light, green baize, the snap of a fresh de
 | ![A briefing](docs/screenshots/briefing.jpg) **A briefing** for each game | ![Seating](docs/screenshots/seating.jpg) **Set the table:** chairs and house rules |
 | ![Texas Hold'em](docs/screenshots/holdem.jpg) **Texas Hold'em** on the flop | ![Blackjack](docs/screenshots/blackjack.jpg) **Blackjack** against the house |
 | ![Klondike](docs/screenshots/klondike.jpg) **Klondike** on its own card table | ![Bridge auction](docs/screenshots/bridge-auction.jpg) **Contract Bridge:** the auction |
-| ![Big Two](docs/screenshots/bigtwo.jpg) **Big Two:** beat the last play | ![The House](docs/screenshots/the-house.jpg) **The House:** venue, deck, back and sound |
+| ![Big Two](docs/screenshots/bigtwo.jpg) **Big Two:** beat the last play | ![Egyptian Rat Screw](docs/screenshots/ers.jpg) **Egyptian Rat Screw:** flip, answer the challenge, slap |
+| ![The House](docs/screenshots/the-house.jpg) **The House:** venue, deck, back and sound | ![Noir '62](docs/screenshots/venue-noir62.jpg) **Noir '62:** Spades in black and white |
 
 ---
 
@@ -291,11 +292,15 @@ The game should feel like sitting down at a real table in a film, not filling in
 
 - Each seat has a small name plaque, with the dealer's puck beside it. A pool of lamplight drifts toward whoever's turn it is.
 - Opponents hold their cards face down in a small fan above their plaque, so you can see how many they have.
-- Cards played to a trick sit in front of the player who played them, and the finished trick stays on the felt for a moment so everyone can see what took it.
+- Cards played to a trick sit in front of the player who played them. The finished trick stays on the felt for a moment so everyone can see what took it, then glides to the winner and fades away.
 - The **scorepad** (top bar) keeps every round's scores, plus a **ledger** of everything that's happened.
 - A single **subtitle line** narrates the game like captions in a film: *"North leads the king of spades."*
 
 **Your hand is first-person.** Your cards are fanned at the bottom of the screen. The moves you can make appear on a slim **action rail** to the right with a one-line hint. Cards you can't play dim when others can.
+
+**You always know whose turn it is.** When it's your move, a **"Your turn"** flag appears above your hand and your name plaque glows. Click a card while it's someone else's turn and the narration tells you whose turn it is; click a card you can't play and it says so.
+
+**Leave is always within reach.** The top bar (Leave, Scorepad, Rules) stays above every results card, and each results card has its own **Leave the table** button.
 
 **Cards move like cards.** Played cards glide in from the player who played them, and your hand re-fans smoothly as it changes. Reduced motion turns the movement off.
 
@@ -580,7 +585,8 @@ The game is a static site, so any static host works.
 
 | Problem | What to do |
 |---------|------------|
-| Computers don't move, or a game won't respond | Reload the page so the browser fetches the latest version (Ctrl+F5 / Cmd+Shift+R). If something goes wrong, the game now shows the error at the top of the screen — note what it says. |
+| Computers don't move, or a game won't respond | Reload the page so the browser fetches the latest version (Ctrl+F5 / Cmd+Shift+R), or open it in a private window. The version number is at the bottom of **The House**. If something goes wrong, the game shows the error at the top of the screen — note what it says. |
+| A card won't move in Klondike | The narration says why: it has nowhere legal to go, or that drop isn't allowed (build down in alternating colours; only a King goes on an empty column). |
 | It looks like nothing is happening | Check the hint above the action rail on the right: it's probably your turn (for example, choose three cards to pass in Hearts, or make your bid in Spades). |
 | No sound | Tap or click once: browsers only allow sound after you interact. Check the volumes in The House. If your browser blocks audio entirely, the game plays on silently. |
 | Dragging doesn't work | Dragging is only used in Klondike. In every other game you tap or click cards and use the buttons on the right. |
