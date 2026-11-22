@@ -126,7 +126,7 @@ button { font: inherit; color: inherit; }
 /* ---------- your hand ---------- */
 
 .hand {
-  position: absolute; left: 50%; bottom: calc(var(--card-h) * -0.04);
+  position: absolute; left: 50%; bottom: 14px;
   width: 0; height: var(--card-h);
   z-index: 20;
 }

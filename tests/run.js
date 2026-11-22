@@ -16,6 +16,7 @@ const ROOT = path.join(__dirname, '..');
 const SCRIPTS = [
   'js/core/cards.js',
   'js/core/registry.js',
+  'js/core/engine.js',
   'js/art/cardsvg.js',
   'js/art/backs.js',
   'js/art/decks/classic.js',
@@ -24,6 +25,12 @@ const SCRIPTS = [
   'js/audio/stings.js',
   'js/audio/ambience.js',
 ];
+
+// Every rules engine and computer player in js/games and js/ai.
+for (const dir of ['js/games', 'js/ai']) {
+  const d = path.join(ROOT, dir);
+  if (fs.existsSync(d)) fs.readdirSync(d).filter((f) => f.endsWith('.js')).sort().forEach((f) => SCRIPTS.push(dir + '/' + f));
+}
 
 for (const rel of SCRIPTS) {
   const file = path.join(ROOT, rel);

@@ -1,6 +1,7 @@
 /* 52 Cards — boot. Mounts the scene and opens on the cold open.
  * URL hashes jump straight to a screen (handy when testing):
  *   #menu   the game hand     #brief:klondike   a game's briefing
+ *   #seat:crazy8   seating        #play:crazy8&n:4   straight to a table
  *   #house  also open the House drawer */
 (function (root) {
   'use strict';
@@ -17,8 +18,15 @@
     });
 
     const hash = root.location.hash.slice(1).split('&');
-    const brief = hash.find((h) => h.startsWith('brief:'));
-    C52.UI.show(hash.includes('menu') || brief ? 'menu' : 'coldopen', { brief: brief && brief.slice(6) });
+    const arg = (k) => (hash.find((h) => h.startsWith(k + ':')) || '').slice(k.length + 1);
+    if (arg('seat')) C52.UI.show('seating', { game: arg('seat') });
+    else if (arg('play')) {
+      // Straight to a table with computer opponents (used for testing).
+      const meta = C52.Games.meta(arg('play'));
+      const n = Number(arg('n')) || Math.max(meta.players[0], Math.min(4, meta.players[1]));
+      const seats = [{ kind: 'you', name: 'You' }].concat(C52.Seating.CPU_NAMES.slice(0, n - 1).map((name) => ({ kind: 'cpu', level: 'medium', name })));
+      C52.UI.show('table', { game: arg('play'), seats, options: {} });
+    } else C52.UI.show(hash.includes('menu') || arg('brief') ? 'menu' : 'coldopen', { brief: arg('brief') });
     if (hash.includes('house')) C52.Scene.toggleDrawer(true);
   }
 
