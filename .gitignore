@@ -1,0 +1,15 @@
+# Licensed reference artwork (Vecteezy) — kept local, not redistributed
+ref*.jpg
+ref*.svg
+ref*.zip
+*.eps
+hand image.jpg
+design-references/
+
+# Local tooling / handoff notes
+.netlify/
+last_update.md
+.vscode/
+node_modules/
+Thumbs.db
+.DS_Store
