@@ -18,6 +18,10 @@ const SCRIPTS = [
   'js/art/cardsvg.js',
   'js/art/backs.js',
   'js/art/decks/classic.js',
+  'js/audio/mixer.js',
+  'js/audio/foley.js',
+  'js/audio/stings.js',
+  'js/audio/ambience.js',
 ];
 
 for (const rel of SCRIPTS) {
