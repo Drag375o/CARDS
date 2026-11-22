@@ -159,7 +159,8 @@
     /** Position on the felt between the centre and a seat (for trick cards). */
     toward(seat, dist) {
       const p = pos(relSeat(seat, R.me, R.view.n), R.view.n);
-      const d = dist == null ? 0.38 : dist;
+      // Far-side seats hang their cards below the plaque, so their trick cards land nearer the centre.
+      const d = (dist == null ? 0.38 : dist) * (p.y < 25 ? 0.72 : 1);
       return { x: +(50 + (p.x - 50) * d).toFixed(2), y: +(50 + (p.y - 50) * d * 1.05).toFixed(2), a: p.a };
     },
     /** Cards played to a trick, each nudged toward the seat that played it. plays: [{seat, card}] */
