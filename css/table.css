@@ -220,3 +220,24 @@
 
 .ers-pile { position: absolute; inset: 22% 30% 30% 30%; cursor: pointer; }
 .ers-pile .slot { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+
+/* ---------- Bridge ---------- */
+
+.auction-wrap { position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%); }
+.auction {
+  border-collapse: collapse; min-width: min(360px, 60vw); background: rgba(239, 231, 212, 0.94); color: #231d15;
+  font: 500 14px var(--font-type); box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45); transform: rotate(-0.6deg);
+}
+.auction th { padding: 6px 10px 4px; font: 600 10.5px var(--font-ui); letter-spacing: 0.14em; text-transform: uppercase; color: #6d5f48; border-bottom: 1px solid rgba(35, 29, 21, 0.3); }
+.auction th small { font: 400 10px var(--font-type); letter-spacing: 0; text-transform: none; color: #8a7a60; }
+.auction td { padding: 5px 10px; text-align: center; min-width: 70px; height: 26px; }
+.auction .red-suit { color: #b3242c; }
+.bid-grid { display: grid; gap: 4px; margin: 10px 0 14px; }
+.bid-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.bid-row button { padding: 8px 0; font: 600 15px var(--font-ui); background: #fff; border: 1px solid rgba(0, 0, 0, 0.25); border-radius: 4px; cursor: pointer; }
+.bid-row button:hover:not(:disabled) { border-color: #231d15; background: #f6f0e2; }
+.bid-row button:disabled { opacity: 0.25; cursor: not-allowed; }
+.bid-row .red-suit { color: #b3242c; }
+.trick-card.dummy-play { cursor: pointer; }
+.trick-card.dummy-play .card { filter: drop-shadow(0 0 8px rgba(255, 214, 150, 0.7)); }
+.trick-card.dummy-play:hover { transform: translate(-50%, calc(-50% - 10px)); }

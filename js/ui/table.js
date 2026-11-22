@@ -444,6 +444,16 @@
       body = `<div class="suit-picker">${ch.suits
         .map((a, i) => `<button data-i="${i}" class="${a.suit === 'H' || a.suit === 'D' ? 'red-suit' : ''}" aria-label="${C52.Cards.SUIT_NAME[a.suit]}">${C52.Cards.SUIT_SYMBOL[a.suit]}</button>`)
         .join('')}</div>`;
+    } else if (ch.grid) {
+      // Rows of buttons (the Bridge bidding box). Items are numbered across rows.
+      let k = 0;
+      ch.flat = [];
+      body = `<div class="bid-grid">${ch.grid
+        .map((row) => `<div class="bid-row">${row.map((it) => {
+          ch.flat.push(it);
+          return `<button data-i="${k++}" class="${it.cls || ''}" ${it.disabled ? 'disabled' : ''}>${it.label}</button>`;
+        }).join('')}</div>`)
+        .join('')}</div>`;
     } else if (ch.nums) {
       body = `<div class="num-picker">${ch.nums.map((a, i) => `<button data-i="${i}" ${a.disabled ? 'disabled' : ''}>${a.text}</button>`).join('')}</div>`;
     } else {
@@ -456,7 +466,7 @@
         o.querySelectorAll('[data-i]').forEach((b) => {
           b.onclick = () => {
             const i = Number(b.dataset.i);
-            const pick = ch.suits ? ch.suits[i] : ch.nums ? ch.nums[i].action : ch.options[i].action;
+            const pick = ch.suits ? ch.suits[i] : ch.grid ? ch.flat[i].action : ch.nums ? ch.nums[i].action : ch.options[i].action;
             closeOverlay();
             if (ch.options && ch.options[i].fn) ch.options[i].fn();
             else submit(pick);
