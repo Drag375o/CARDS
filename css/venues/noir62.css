@@ -1,6 +1,6 @@
 /* Noir '62 — a back room after midnight, in black and white.
- * A bare bulb over worn grey felt; moonlight comes through venetian
- * blinds and falls in stripes across the back wall. The mood lives in the
+ * A bare bulb over worn grey felt; moonlight through venetian blinds
+ * falls in soft stripes across the back wall. The mood lives in the
  * room: the table and the cards stay clean and readable. */
 
 [data-venue='noir62'] {
@@ -28,25 +28,16 @@
     linear-gradient(180deg, #1f1f1f 0%, #121212 55%, #070707 100%);
 }
 
-/* The window: a tall pane of blinds on the left wall, lit from outside. */
+/* A cone of light from the bare bulb, and a little haze hanging in it. */
 [data-venue='noir62'] .backdrop::before {
-  left: 5%;
-  right: auto;
-  top: 7%;
-  bottom: auto;
-  width: 11vw;
-  min-width: 80px;
-  height: 21vh;
-  border: 3px solid #050505;
   background:
-    repeating-linear-gradient(180deg, rgba(235, 235, 235, 0.42) 0 9px, rgba(10, 10, 10, 0.9) 9px 15px),
-    #222;
-  box-shadow: 0 0 60px rgba(255, 255, 255, 0.07), inset 0 0 18px rgba(0, 0, 0, 0.7);
+    conic-gradient(from 160deg at 50% -6%, transparent 0deg, rgba(255, 255, 255, 0.07) 14deg, rgba(255, 255, 255, 0.07) 26deg, transparent 40deg),
+    radial-gradient(ellipse 40% 18% at 50% 30%, rgba(255, 255, 255, 0.035), transparent 70%);
 }
 
-/* The light it throws: soft slanted bars across the back wall only, fading out before the table. */
+/* Moonlight through venetian blinds (off-screen): soft slanted bars on the back wall only, fading out before the table. */
 [data-venue='noir62'] .backdrop::after {
-  background: repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.06) 0 26px, transparent 26px 50px);
+  background: repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.045) 0 24px, transparent 24px 46px);
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 30%, transparent 52%);
   mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 30%, transparent 52%);
 }
