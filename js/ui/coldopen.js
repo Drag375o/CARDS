@@ -42,7 +42,11 @@
     if (!el) return;
     if (started) return finish(); // second tap skips ahead
     started = true;
-    C52.Mixer.ensure();
+    try {
+      C52.Mixer.ensure();
+    } catch (e) {
+      /* sound unavailable: carry on */
+    }
     const reduced = C52.Prefs.get().reducedMotion;
     el.classList.add('cut');
     C52.Sound.play('cut');

@@ -164,7 +164,11 @@
     const fn = SOUNDS[name];
     if (!fn) return 0;
     const o = opts || {};
-    return fn(m.ctx.currentTime + 0.005 + (o.delay || 0), o) || 0;
+    try {
+      return fn(m.ctx.currentTime + 0.005 + (o.delay || 0), o) || 0;
+    } catch (e) {
+      return 0; // a sound must never stop the game
+    }
   }
 
   C52.Sound = Object.assign(C52.Sound || {}, { play, names: () => Object.keys(SOUNDS) });

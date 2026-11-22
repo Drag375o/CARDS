@@ -313,6 +313,14 @@
 
   /** Start, switch or stop the bed to match the current venue and volume. */
   function sync() {
+    try {
+      syncBed();
+    } catch (e) {
+      /* ambience is optional */
+    }
+  }
+
+  function syncBed() {
     const m = X();
     if (!m || !m.ready() || !C52.Prefs) return;
     const p = C52.Prefs.get();

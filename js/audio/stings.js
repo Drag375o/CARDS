@@ -163,7 +163,11 @@
   function sting(name) {
     const m = X();
     if (!m || !m.ready() || !STINGS[name]) return 0;
-    return STINGS[name](m.ctx.currentTime + 0.02);
+    try {
+      return STINGS[name](m.ctx.currentTime + 0.02);
+    } catch (e) {
+      return 0;
+    }
   }
 
   C52.Sound = Object.assign(C52.Sound || {}, { sting });

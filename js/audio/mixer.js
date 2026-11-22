@@ -24,7 +24,12 @@
     if (M.ctx) return M.ctx;
     const AC = root.AudioContext || root.webkitAudioContext;
     if (!AC) return null;
-    const ctx = (M.ctx = new AC());
+    let ctx;
+    try {
+      ctx = M.ctx = new AC();
+    } catch (e) {
+      return null; // no sound on this browser; the game plays on silently
+    }
 
     const comp = ctx.createDynamicsCompressor();
     comp.threshold.value = -16;

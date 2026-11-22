@@ -8,7 +8,17 @@
   'use strict';
   const C52 = root.C52;
 
+  /** Any unexpected error is shown on screen, so it can be reported instead of silently freezing play. */
+  function showErrors() {
+    const say = (msg) => {
+      if (C52.Scene && C52.Scene.notice) C52.Scene.notice('Something went wrong: <b>' + String(msg).replace(/</g, '&lt;').slice(0, 160) + '</b>. Try Leave, or reload the page.', { ms: 12000 });
+    };
+    root.addEventListener('error', (e) => say(e.message || e.error));
+    root.addEventListener('unhandledrejection', (e) => say((e.reason && e.reason.message) || e.reason));
+  }
+
   function boot() {
+    showErrors();
     C52.Scene.mount();
     C52.Prefs.onChange((p, patch) => {
       if (patch.venue || patch.deck || 'back' in patch || 'fourColour' in patch || 'largeIndex' in patch) C52.UI.refresh();
