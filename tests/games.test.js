@@ -36,7 +36,7 @@ function simulate(id, seed, opts) {
     if (!audit.ok) throw new Error(id + ' card audit failed after step ' + steps + ': ' + JSON.stringify(audit));
     steps++;
   }
-  if (st.phase !== 'gameover') throw new Error(id + ' did not finish in ' + steps + ' steps');
+  if (st.phase !== 'gameover' && !opts.allowUnfinished) throw new Error(id + ' did not finish in ' + steps + ' steps');
   return { st, steps, n };
 }
 global.simulate = simulate;
@@ -61,8 +61,9 @@ for (const g of C52.Games.list()) {
   test(g.id + ': 40 computer games finish with every card accounted for', () => {
     for (let s = 1; s <= 40; s++) simulate(g.id, s, {});
   });
-  test(g.id + ': 40 random-move games finish', () => {
-    for (let s = 101; s <= 140; s++) simulate(g.id, s, { random: true });
+  // Random movers may never finish (they rarely meld or bid well); this checks robustness, not completion.
+  test(g.id + ': 40 random-move games stay legal and keep every card', () => {
+    for (let s = 101; s <= 140; s++) simulate(g.id, s, { random: true, allowUnfinished: true, maxSteps: 3000 });
   });
   test(g.id + ": views never show another player's hidden cards", () => {
     const eng = C52.Games.engine(g.id);
