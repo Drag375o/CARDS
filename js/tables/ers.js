@@ -39,14 +39,15 @@
         h += `<div class="trick-card" style="left:${50 + k * 2.6}%;top:${46 + k * 1.2}%;--rot:${(c.charCodeAt(0) % 9) - 4 + k * 3}deg;z-index:${i + 1}">${ui.card(c, { attrs: i === n - 1 ? `data-seat="${(v.events.slice().reverse().find((e) => e.card === c) || {}).seat}"` : '' })}</div>`;
       });
       h += `</div>`;
-      if (v.pileCount) h += `<div class="suit-badge" style="left:50%;top:70%">${v.pileCount} in the pile</div>`;
+      if (v.pileCount) h += `<div class="suit-badge" style="left:50%;top:62%">${v.pileCount} in the pile</div>`;
       // Your own face-down stack, in front of you: tap it to flip.
       const flipI = ui.actIndex((a) => a.type === 'flip' || a.type === 'collect');
-      h += ui.pile(50, 88, { faceDown: v.counts[v.me] > 0, empty: v.counts[v.me] ? '' : '&nbsp;', label: '', act: flipI >= 0 ? flipI : null });
+      // Kept well inside the oval so the felt's curved edge doesn't clip it.
+      h += ui.pile(50, 78, { faceDown: v.counts[v.me] > 0, empty: v.counts[v.me] ? '' : '&nbsp;', label: '', act: flipI >= 0 ? flipI : null });
       if (v.challenge && v.pendingWin === null && v.turn != null) {
-        h += `<div class="suit-badge" style="left:50%;top:20%">${ui.name(v.turn)}: ${v.challenge.left} chance${v.challenge.left > 1 ? 's' : ''} to answer</div>`;
+        h += `<div class="suit-badge" style="left:50%;top:29%">${ui.name(v.turn)}: ${v.challenge.left} chance${v.challenge.left > 1 ? 's' : ''} to answer</div>`;
       }
-      if (v.pendingWin !== null) h += `<div class="suit-badge" style="left:50%;top:20%">${ui.name(v.pendingWin)} wins the challenge</div>`;
+      if (v.pendingWin !== null) h += `<div class="suit-badge" style="left:50%;top:29%">${ui.name(v.pendingWin)} wins the challenge</div>`;
       return h;
     },
     status(v) {
