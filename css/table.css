@@ -173,3 +173,24 @@
   .seat { min-width: 80px; }
   .status-line { display: none; }
 }
+
+/* ---------- rectangular card table (Klondike) ---------- */
+
+.table.rect { border-radius: 26px / 26px; }
+.table.rect .felt { inset: 2.6%; border-radius: 16px; }
+[data-game='klondike'] .table-wrap { top: 50%; width: min(96vw, 1180px, 150vh); aspect-ratio: 1.42; }
+[data-game='klondike'] { --card-w: clamp(40px, min(8.4vw, 11.6vh), 112px); }
+[data-game='klondike'] .felt-mark { top: 93%; }
+[data-game='klondike'] .rail { bottom: 24px; }
+[data-game='klondike'] .my-plaque { display: none; }
+.kl-pile, .kl-card { position: absolute; transform: translateX(-50%); width: var(--card-w); height: var(--card-h); }
+.kl-pile .card, .kl-card .card { position: relative; display: block; }
+.kl-pile[data-act] { cursor: pointer; }
+.kl-src { cursor: grab; touch-action: none; }
+.kl-card.dragging { cursor: grabbing; filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.5)); }
+.kl-card.dragging .card { transition: none; }
+.kl-card { transition: top 0.25s var(--ease); }
+@media (max-aspect-ratio: 4/5) {
+  [data-game='klondike'] .table-wrap { width: 98vw; aspect-ratio: 0.72; top: 46%; }
+  [data-game='klondike'] { --card-w: 12.4vw; }
+}

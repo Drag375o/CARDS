@@ -174,6 +174,7 @@
     name: (seat) => (R.view ? R.view.names[seat] : ''),
     suitHTML: (s) => `<span class="s${s === 'H' || s === 'D' ? ' red-suit' : ''}">${C52.Cards.SUIT_SYMBOL[s]}</span>`,
     rerender: () => draw(),
+    submit: (a) => submit(a),
   };
 
   function skeleton() {
@@ -224,6 +225,8 @@
     if (!view || !R.stage.querySelector('#center')) return;
     const T = R.T;
     $('#tbl').style.setProperty('--tilt', (T.tilt == null ? 12 : T.tilt) + 'deg');
+    $('#tbl').classList.toggle('rect', T.shape === 'rect');
+    R.stage.dataset.game = R.game;
 
     // Seats.
     $('#seats').innerHTML = view.names
@@ -260,6 +263,7 @@
       }
     });
     R.centerCards = now;
+    if (T.afterRender) T.afterRender(center, view, R.actions, ui);
 
     $('#status').innerHTML = T.status ? T.status(view) : '';
     drawHand();
