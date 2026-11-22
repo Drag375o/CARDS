@@ -1,0 +1,44 @@
+/* The Vault — a Swiss bank's private room. A table of pale banknote
+ * paper with engraved line work, steel walls and a great round door. */
+
+[data-venue='vault'] {
+  --bg: #0b0d0e;
+  --ink: #eef2ea;
+  --ink-dim: rgba(238, 242, 234, 0.6);
+  --accent: #8fc1b5;
+  --felt-1: #e7eddb;
+  --felt-2: #d6dfc0;
+  --felt-3: #b9c69c;
+  --rail-1: #4b5257;
+  --rail-2: #1d2124;
+  --rail-line: #1e5a53;
+  --lamp: rgba(255, 255, 255, 0.25);
+  --panel: rgba(12, 15, 16, 0.94);
+  --panel-line: rgba(143, 193, 181, 0.3);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+}
+
+[data-venue='vault'] .backdrop {
+  background:
+    radial-gradient(circle at 50% 18%, transparent 0 13vmin, rgba(160, 170, 176, 0.18) 13vmin calc(13vmin + 2px), transparent calc(13vmin + 2px) 16vmin, rgba(160, 170, 176, 0.14) 16vmin calc(16vmin + 6px), transparent calc(16vmin + 6px)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 6vw),
+    linear-gradient(180deg, #2a2f33 0%, #191c1f 55%, #0b0d0e 100%);
+}
+/* Bolts around the vault door. */
+[data-venue='vault'] .backdrop::before {
+  background: repeating-conic-gradient(from 0deg at 50% 18%, rgba(200, 210, 214, 0.18) 0 1.2deg, transparent 1.2deg 22.5deg);
+  mask-image: radial-gradient(circle at 50% 18%, transparent 0 17vmin, #000 17vmin 18.5vmin, transparent 18.5vmin);
+  -webkit-mask-image: radial-gradient(circle at 50% 18%, transparent 0 17vmin, #000 17vmin 18.5vmin, transparent 18.5vmin);
+}
+/* Guilloché: fine engraved rings across the paper. */
+[data-venue='vault'] .felt {
+  background:
+    repeating-radial-gradient(ellipse at 50% 50%, rgba(30, 90, 83, 0.09) 0 1px, transparent 1px 7px),
+    repeating-radial-gradient(ellipse at 20% 30%, rgba(30, 90, 83, 0.05) 0 1px, transparent 1px 11px),
+    radial-gradient(ellipse 70% 65% at 50% 42%, var(--felt-1) 0%, var(--felt-2) 58%, var(--felt-3) 100%);
+  box-shadow: inset 0 0 0 2px var(--rail-line), inset 0 0 0 7px rgba(30, 90, 83, 0.2), inset 0 18px 50px rgba(0, 0, 0, 0.25);
+}
+[data-venue='vault'] .felt::after { opacity: 0.06; }
+[data-venue='vault'] .felt-mark { color: #1e5a53; opacity: 0.5; }
+[data-venue='vault'] .slot { border-color: rgba(30, 90, 83, 0.35); color: rgba(30, 90, 83, 0.4); }
+[data-venue='vault'] .pile .count { color: rgba(30, 90, 83, 0.75); }
