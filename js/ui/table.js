@@ -562,10 +562,15 @@
           C52.Sound.play('brush');
           C52.UI.show('menu', { brief: R.game });
         };
-        o.querySelector('#lv-no').onclick = closeOverlay;
+        o.querySelector('#lv-no').onclick = () => {
+          closeOverlay();
+          draw(); // bring back the results card if one was showing
+        };
       }
     );
   }
+
+  const NEXT_LABEL = { blackjack: 'Next hand', holdem: 'Next hand', twentyfive: 'Next hand', bridge: 'Next board' };
 
   /** Round and game debriefs, shown automatically when the phase calls for one. */
   function drawPhaseOverlay() {
@@ -594,8 +599,8 @@
         ? `<p class="slip-line">Waiting for the host to deal again…</p><button class="btn ghost" id="db-leave">Leave the table</button>`
         : `<button class="btn primary" id="db-again">Deal again</button><button class="btn ghost" id="db-leave">Leave the table</button>`
       : next
-      ? `<button class="btn primary" id="db-next">${s.nextLabel || 'Next round'}</button><button class="btn ghost" id="db-pad">Scorepad</button>`
-      : `<p class="slip-line">Waiting for the host to deal the next round…</p>`;
+      ? `<button class="btn primary" id="db-next">${s.nextLabel || NEXT_LABEL[R.game] || 'Next round'}</button><button class="btn ghost" id="db-pad">Scorepad</button><button class="btn ghost" id="db-leave">Leave the table</button>`
+      : `<p class="slip-line">Waiting for the host to deal the next round…</p><button class="btn ghost" id="db-leave">Leave the table</button>`;
     overlay(
       `<article class="slip wide"><p class="slip-file">${over ? 'DEBRIEF' : 'ROUND ' + view.round} &middot; ${esc(C52.Games.meta(R.game).name.toUpperCase())}</p>
         <h2>${esc(fixYou(s.title || (over ? 'Game over' : 'Round over')))}</h2>${s.note ? `<p class="slip-line">${fixYou(s.note)}</p>` : ''}
@@ -605,7 +610,7 @@
         if (q('#db-next')) q('#db-next').onclick = () => submit(next);
         if (q('#db-pad')) q('#db-pad').onclick = () => openPad('scores');
         if (q('#db-again')) q('#db-again').onclick = () => (C52.Online && C52.Online.isHost() ? C52.Online.restart() : C52.UI.show('table', R.params));
-        if (q('#db-leave')) q('#db-leave').onclick = () => (C52.Online && (C52.Online.isHost() || C52.Online.isGuest()) ? confirmLeave() : C52.UI.show('menu', { brief: R.game }));
+        if (q('#db-leave')) q('#db-leave').onclick = () => (over && !(C52.Online && (C52.Online.isHost() || C52.Online.isGuest())) ? C52.UI.show('menu', { brief: R.game }) : confirmLeave());
       }
     );
     o.dataset.kind = 'debrief';

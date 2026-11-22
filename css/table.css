@@ -4,7 +4,7 @@
 /* ---------- top line ---------- */
 
 .topline {
-  position: absolute; top: 14px; left: 16px; right: 76px; z-index: 40;
+  position: absolute; top: 14px; left: 16px; right: 76px; z-index: 50; /* above results cards, so Leave is always reachable */
   display: flex; align-items: center; gap: 10px; pointer-events: none;
 }
 .topline > * { pointer-events: auto; }
