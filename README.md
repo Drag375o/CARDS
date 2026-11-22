@@ -4,9 +4,9 @@ Twelve card games, one standard 52-card deck, all in the browser.
 
 Play solo, against computer opponents, or online with friends using a room code. There is nothing to install and no account to make. Every game follows its full traditional rules, including the edge cases.
 
-The mood is a 1960s spy thriller: low light, green baize, the snap of a fresh deck, chips sliding across felt. You pick the room you play in and the deck you play with, and you can change either at any time.
+The mood is a 1960s spy thriller: low light, green baize, the snap of a fresh deck. You choose the room you play in and the deck you play with, and you can change either at any time, even mid-hand.
 
-> **Status:** in development. See the [Roadmap](#roadmap) for what's playable so far.
+> **Status:** all twelve games are playable against computer opponents and online. Six venues, six decks and seven card backs are available.
 
 ---
 
@@ -21,12 +21,12 @@ The mood is a 1960s spy thriller: low light, green baize, the snap of a fresh de
 - [What every game screen shows](#what-every-game-screen-shows)
 - [Playing online](#playing-online)
 - [Computer opponents](#computer-opponents)
+- [Controls](#controls)
 - [Running locally](#running-locally)
 - [Project structure](#project-structure)
 - [Architecture](#architecture)
 - [Testing](#testing)
 - [Hosting](#hosting)
-- [Roadmap](#roadmap)
 - [Credits](#credits)
 - [Disclaimer](#disclaimer)
 
@@ -34,7 +34,7 @@ The mood is a 1960s spy thriller: low light, green baize, the snap of a fresh de
 
 ## The games
 
-The full rulebook, covering setup, play, scoring and how to win for every game, is in **[Rules_Modes.md](Rules_Modes.md)**.
+The full rulebook, covering setup, play, scoring and how to win for every game, is in **[Rules_Modes.md](Rules_Modes.md)**. Each table also has a **Rules** button with the same information in plain language.
 
 ### Renowned
 
@@ -66,44 +66,48 @@ Each game stands on its own and needs nothing from the others.
 
 | Mode | Description |
 |------|-------------|
-| **Solo** | Klondike, plus Blackjack against the house. |
-| **Vs computer** | Every multiplayer game. Computer players fill any empty seat at Easy, Medium or Hard. |
-| **Online** | Host a table, share the five-letter room code, and friends join from their own browsers. Computer players fill any seats left empty. |
+| **Solo** | Klondike, or Blackjack alone against the house. |
+| **Vs computer** | Every multiplayer game. Each computer player is Easy, Medium or Hard. Tap a chair at the table to change it. |
+| **Online** | Host a table, share the five-letter room code, and friends join from their own browsers. **Any seat without a person is played by a computer.** |
 
-Partnership games (Spades and Bridge) seat partners opposite each other and score by team.
+Partnership games (Spades and Bridge) seat partners opposite each other and score by team. In Bridge you sit South, with your partner North.
 
 ---
 
 ## House rules we use
 
-Many of these games have regional variants, and the rulebook asks for one clearly defined version of each. These are the defaults. Where a game offers a setting, you choose it in the table setup before the deal.
+Many of these games have regional variants, and the rulebook asks for one clearly defined version of each. These are the defaults. Where a game offers a setting, you choose it on the folded house-rules card before the deal.
 
 <details>
 <summary><b>01 · Texas Hold'em</b></summary>
 
-- No-limit betting. Each player starts with 1,000 chips, with blinds of 10/20 (both adjustable).
+- No-limit betting. Each player starts with 1,000 chips (or 2,000). Blinds are 10/20 (or 25/50).
+- By default the blinds double every ten hands so the game always ends. This can be turned off.
 - Ace counts high, and also low in the A-2-3-4-5 straight.
-- Side pots are built automatically when a player goes all-in.
-- Split pots go to equal best hands. An odd chip goes to the first winner left of the button.
+- Side pots are built automatically when a player goes all in. An uncalled bet goes back to the player who made it.
+- Equal best hands split the pot. An odd chip goes to the first winner left of the button.
 - In heads-up play the button posts the small blind and acts first before the flop.
+- The game ends when one player has every chip, or when you run out.
 </details>
 
 <details>
 <summary><b>02 · Blackjack</b></summary>
 
-- One 52-card deck, reshuffled when fewer than 15 cards remain.
+- One 52-card deck, reshuffled before a hand when fewer than 15 cards remain. If it runs out mid-hand, the cards already played are shuffled back in.
 - A blackjack pays **3:2**. The dealer **stands on soft 17** (you can switch this to hit soft 17).
 - You can double down on any first two cards. You can split a pair once. Split Aces get one card each, and a 21 made after a split is not a blackjack.
 - The dealer checks the hole card for blackjack when showing an Ace or a 10-value card.
 - Insurance and surrender are not offered.
+- You play an agreed number of hands (10, 20 or 40). The player with the most chips wins.
 </details>
 
 <details>
 <summary><b>03 · Klondike</b></summary>
 
 - You choose **draw 1** or **draw 3** before the deal. You can go through the stock any number of times.
-- Cards can come back down from the foundations to the tableau.
-- Undo is available, plus an optional move counter and timer.
+- Cards can come back down from the foundations to the tableau (drag them).
+- Undo, a Hint button, a move counter, and **Send all home** once every card is face up.
+- **Concede** ends the game if you get stuck.
 </details>
 
 <details>
@@ -112,9 +116,9 @@ Many of these games have regional variants, and the rulebook asks for one clearl
 - Ace is low only: A-2-3 is a run, Q-K-A is not.
 - You can meld and lay off on any turn, including onto other players' melds.
 - You can't discard the card you just took from the discard pile.
-- You go out by melding or laying off every card. The final discard is optional.
+- You go out by melding, laying off or discarding your last card. The final discard is optional.
 - When the stock runs out, the discard pile (except its top card) is turned over once. If the stock runs out a second time, the round ends with no score.
-- The winner scores the total of everyone else's unmelded cards (A = 1, 2–10 at face value, J/Q/K = 10). First to 100 wins the match.
+- The winner scores the total of everyone else's unmelded cards (A = 1, 2–10 at face value, J/Q/K = 10). First to 100 (or 250) wins the match.
 </details>
 
 <details>
@@ -124,27 +128,28 @@ Many of these games have regional variants, and the rulebook asks for one clearl
 - The 2♣ leads the first trick. No Hearts or Q♠ can be played on the first trick, unless your hand has nothing else.
 - Hearts can't be led until they are broken. Playing the Q♠ does not break Hearts.
 - **Shooting the moon:** if you take all 26 points, every opponent gets 26 instead.
-- The game ends when someone reaches 100. The lowest score wins, and tied low scores share the win.
+- The game ends when someone reaches 100 (or 50). The lowest score wins, and tied low scores share the win.
 </details>
 
 <details>
 <summary><b>06 · Spades</b></summary>
 
 - Bids go from 0 to 13. A bid of 0 is **Nil**. Partners' bids are added together, except Nil bids, which are scored on their own.
-- Nil scores +100 if made and −100 if failed. Blind Nil is off.
+- Nil scores +100 if made and −100 if failed. A failed Nil's tricks count as bags. Blind Nil is off.
 - A team that makes its bid scores 10 per trick bid plus 1 per overtrick (a "bag"). Every 10 bags costs 100 points. A team that misses its bid loses 10 per trick bid.
 - The player left of the dealer leads first. Spades can't be led until broken, unless you hold only Spades.
-- First team to **500** wins. A team that falls to **−200** loses.
+- First team to **500** (or 300) wins. A team that falls to **−200** loses.
 </details>
 
 <details>
 <summary><b>07 · Contract Bridge</b></summary>
 
-- Standard auction with bids, passes, doubles and redoubles. The auction ends after three passes in a row following a bid. If all four players pass, the hand is redealt.
+- Standard auction with bids, passes, doubles and redoubles. The auction ends after three passes in a row following a bid. If all four players pass, the board is thrown in.
+- The declarer is the first player of the winning side to name the contract's suit. The declarer plays the dummy's cards as well as their own.
 - **Duplicate scoring** includes trick score, overtricks, undertricks, game and part-score bonuses, slam bonuses, and the "insult" bonus for making a doubled or redoubled contract.
 - Dealer and vulnerability follow the standard 16-board cycle.
-- The match is a set number of boards (8 by default). The highest total score wins.
-- Computer players bid using a simple natural system based on high-card points.
+- The match is a set number of boards (4, 8 or 16; 8 by default). The highest total score wins.
+- Computer players bid using a simple natural system based on high-card points (see [Computer opponents](#computer-opponents)).
 </details>
 
 <details>
@@ -153,8 +158,8 @@ Many of these games have regional variants, and the rulebook asks for one clearl
 - Seven cards each for 2–4 players, five each for 5–7.
 - If the first card turned up is an 8, it goes back into the deck and another card is turned.
 - If you can't play, draw **one** card. You may play it straight away if it's legal. Otherwise your turn ends.
-- If the draw pile runs out, the discard pile (minus its top card) is reshuffled into a new one.
-- The winner scores what's left in the other players' hands (8 = 50, faces = 10, A = 1, other cards at face value). First to 100 wins.
+- If the draw pile runs out, the discard pile (minus its top card) is reshuffled into a new one. If nobody can move, the lowest hand takes the round.
+- The winner scores what's left in the other players' hands (8 = 50, faces = 10, A = 1, other cards at face value). First to 100 (or 200) wins.
 </details>
 
 <details>
@@ -164,9 +169,10 @@ Many of these games have regional variants, and the rulebook asks for one clearl
 - Five-card hands rank **Straight < Flush < Full House < Four of a Kind + 1 < Straight Flush**.
 - Straights can't wrap around and can't include a 2. The highest straight is 10-J-Q-K-A.
 - Equal straights or flushes are compared by their highest card, then by suit.
-- Whoever holds the **3♦** leads first, and that first play must include it.
+- Whoever holds the **3♦** leads first, and that first play must include it. With 2 players, the lowest card dealt leads.
 - Once you pass, you're out until someone wins the pile and starts fresh.
 - With 2 players, each gets 13 cards and the rest stay out of play. With 3 players, each gets 17, and whoever holds the 3♦ also takes the one card left over.
+- Play a single round, or a five-round match where cards left in hand are penalty points.
 </details>
 
 <details>
@@ -182,7 +188,7 @@ Many of these games have regional variants, and the rulebook asks for one clearl
 <details>
 <summary><b>11 · Oh Hell</b></summary>
 
-- Rounds go up from 1 card each to the largest hand the deck allows while leaving one card to turn up for trump. That is 17 cards with 3 players, 12 with 4, 10 with 5, 8 with 6 and 7 with 7.
+- Rounds go up from 1 card each to the largest hand the deck allows while leaving one card to turn up for trump: 17 cards with 3 players, 12 with 4, 10 with 5, 8 with 6 and 7 with 7. For a shorter game, stop at 10 or 7 cards.
 - The dealer bids last and can't bid a number that would make the total bids equal the tricks available.
 - An exact bid scores **10 + the bid**. Anything else scores 0.
 </details>
@@ -200,7 +206,7 @@ Many of these games have regional variants, and the rulebook asks for one clearl
 - **Following suit:** if a non-trump suit is led, you may follow suit or play a trump. You only discard another suit if you can do neither.
 - **Reneging:** the 5 of trumps, the J of trumps and the A♥ don't have to be played to a trump lead when the trump led is lower than them.
 - **Robbing:** the player holding the Ace of trumps may swap any card for the turned-up trump card. If the turned-up card is itself an Ace, the dealer may rob it.
-- Each trick is worth 5 points. The first player to 25 wins.
+- Each trick is worth 5 points. The first player to 25 wins, even mid-hand.
 </details>
 
 ---
@@ -212,35 +218,35 @@ Two choices change the whole look, and they are independent of each other:
 - **Venue:** the room you're playing in. It sets the table surface, lighting, background, typography, the ambient sound and the reverb on every sound effect.
 - **Deck:** the cards themselves. It sets the faces, the court artwork, the pip layouts and the card back.
 
-Change either from the menu at any time, even mid-hand. The table re-dresses itself without interrupting play. Each venue suggests a deck, but any deck works in any venue.
+Change either from **The House** (the gold "52" button, top right) at any time, even mid-hand. Each venue suggests a deck, but any deck works in any venue.
 
 ### Venues
 
 | Venue | Setting | Table | Ambience |
 |-------|---------|-------|----------|
-| **Riviera Salon** *(default)* | A private room at a 1960s seaside casino | Deep green baize, a brass rail, warm chandelier glow | A murmuring room, a distant roulette wheel, a hushed string quartet |
-| **The Lair** | A villain's private table, carved into volcanic rock | Black glass lit red from below, brushed steel edges | A low machine hum and water moving somewhere behind the walls |
-| **Noir '62** | A back room after midnight, in black and white | Worn felt crossed by stripes of light through venetian blinds | Rain on the window, a ceiling fan, a muted trumpet two floors down |
-| **Mayfair Bar** | A modern cocktail bar after closing | Polished walnut and leather under amber back-lit shelves | Ice in a glass, a shaker, low lounge music |
-| **Night Train** | A dining car crossing the Alps | Burgundy velvet and inlaid wood under a swaying lamp | The steady rhythm of the rails and the occasional whistle |
-| **The Vault** | A Swiss bank's private room | Pale banknote paper with fine engraved line work | A ticking clock and the heavy hum of the vault |
+| **Riviera Salon** *(default)* | A private room at a 1960s seaside casino | Deep green baize, a mahogany rail with brass inlay, a chandelier glowing overhead | A murmuring room, a distant roulette wheel, chips at other tables, a hushed string quartet |
+| **The Lair** | A villain's private table, carved into volcanic rock | Black glass lit red from below, brushed steel edges | A low machine hum and water dripping in the dark |
+| **Noir '62** | A back room after midnight, in black and white | Worn grey felt crossed by stripes of light through venetian blinds; the whole table is drained of colour | Rain on the window, a ceiling fan, a muted trumpet two floors down |
+| **Mayfair Bar** | A modern cocktail bar after closing | Oxblood leather under amber back-lit shelves, a walnut and brass rim | Ice in a glass, a cocktail shaker, low music |
+| **Night Train** | A dining car crossing the Alps | Burgundy velvet and inlaid wood, a swaying lamp, village lights passing the window | The rhythm of the rails and a distant whistle |
+| **The Vault** | A Swiss bank's private room | Pale banknote paper with engraved guilloché rings, a great round steel door | A heavy clock and the hum of the vault |
 
 ### Decks
 
 | Deck | Based on | Look |
 |------|----------|------|
 | **Classic** | Traditional full deck | White faces, red and black pips, double-headed courts in red, gold and blue robes |
-| **Engraved** | Vintage woodcut sheet | Teal ink (`#1E5A53`) on pale green (`#DFECB7`), hatched courts and a fine diamond-lattice back, like a banknote |
-| **Storybook** | Cartoon court deck | Rounded corners, decorative pip patterns and soft, illustrated royals |
-| **Silhouette** | Silhouette icons | Solid black cards with white indices. Stark and graphic. |
-| **Ink Line** | Line-icon set | Outline-only faces with a crown mark for royals. Minimal and very readable. |
-| **Pastel** | Die-cut sticker card | Peach faces, mauve backs and a white die-cut border |
+| **Engraved** | Vintage woodcut sheet | Teal ink (`#1E5A53`) on pale green (`#EEF3DC`), hatched courts and rosette aces, like a banknote |
+| **Storybook** | Cartoon court deck | Rounded corners, pips set in decorative rings, soft illustrated royals with closed eyes |
+| **Silhouette** | Silhouette icons | Solid black cards with white indices; royals are bold white emblems (crown, tiara, feathered cap) |
+| **Ink Line** | Line-icon set | Outline-only pips and line-drawn royals in profile. Minimal and very readable. |
+| **Pastel** | Die-cut sticker card | Peach faces, dusty rose and graphite pips, a thick white die-cut border |
 
-Card backs can also be chosen on their own: red lattice, blue lattice, engraved guilloché, monogram, or the venue's own back.
+**Card backs** can also be chosen on their own: red lattice, blue lattice, engraved guilloché, monogram, noir, mauve, or the venue's own back.
 
-All card art is drawn in code as **SVG**. There are no image files to download, and cards stay sharp at any size.
+All card art is drawn in code as **SVG**. There are no image files to download, and cards stay sharp at any size. `tools/deck-preview.html` shows every card of every deck side by side.
 
-**Readability options:** a four-colour suit option (♦ blue, ♣ green), large corner indices, and reduced motion.
+**Readability options:** a four-colour suit option (♦ blue, ♣ green), large corner indices, reduced motion, and the pace of the computer players (relaxed, normal or brisk).
 
 ---
 
@@ -250,24 +256,25 @@ The game should feel like sitting down at a real table in a film, not filling in
 
 **Everything happens at the table.**
 
-1. **Cold open.** A deck is shuffled and squared in the dark, and the title comes up.
-2. **Choose a game.** The twelve games are dealt to you as a fanned hand. Lift a card to read its briefing (players, length, what it's about), then play it to sit down.
-3. **Set the table.** Empty chairs sit around the table. Tap a chair to seat a computer player and choose how strong it is, or leave it open for a friend online. House rules sit on a small folded card on the table. Tap it to change them.
+1. **Cold open.** A face-down deck waits in a pool of light on the dark table. Tap to cut it: the deck is riffled twice and squared, and the title comes up. The tap also switches the sound on, since browsers only allow audio after you interact.
+2. **Choose a game.** The twelve games are dealt to you as a fanned hand of title cards. Lift one to read its briefing on a typed, paper-clipped file slip.
+3. **Set the table.** Empty chairs sit around the table. Tap a chair to change how strong its computer player is, or (when hosting online) open it for a friend. House rules are on a folded card in the middle.
 4. **Play.**
-5. **Debrief.** Results arrive as a typed slip: scores, the key hand, and a stamp for the winner. From there you can deal again or leave the table.
+5. **Debrief.** Each round ends with a typed slip of scores; the game ends with a stamped winner. From there you can deal again or leave.
 
 **No dashboards.** Information lives on the table where a player would expect it:
 
-- Each seat has a small name plaque. A pool of lamplight shows whose turn it is.
-- Chips are real stacks. Tricks are taken and stacked in front of whoever won them. The dealer button is a physical puck that moves around the table.
-- Scores are kept in pencil on a scorepad at the edge of the table. Open it for the full history.
-- A single **subtitle line** at the bottom narrates what happens, like captions in a film: *"North leads the king of spades."* Older lines scroll into the ledger.
+- Each seat has a small name plaque, with the dealer's puck beside it. A pool of lamplight drifts toward whoever's turn it is.
+- Opponents hold their cards face down in a small fan above their plaque, so you can see how many they have.
+- Cards played to a trick sit in front of the player who played them, and the finished trick stays on the felt for a moment so everyone can see what took it.
+- The **scorepad** (top bar) keeps every round's scores, plus a **ledger** of everything that's happened.
+- A single **subtitle line** narrates the game like captions in a film: *"North leads the king of spades."*
 
-**Your hand is first-person.** Your cards are fanned at the bottom of the screen as if you're holding them. The moves you can make appear on a slim action rail beside your hand. You can tap, drag or use the keyboard.
+**Your hand is first-person.** Your cards are fanned at the bottom of the screen. The moves you can make appear on a slim **action rail** to the right with a one-line hint. Cards you can't play dim when others can.
 
-**Cards move like cards.** They are dealt in arcs with a slight spin, settle with a little weight, and flip in perspective. A reduced-motion setting replaces all of this with simple fades.
+**Cards move like cards.** Played cards glide in from the player who played them, and your hand re-fans smoothly as it changes. Reduced motion turns the movement off.
 
-**Phones get their own layout.** In portrait the table is viewed from above, and your hand sits in the thumb zone at the bottom.
+**Phones.** In portrait the table is shown flat and the action rail moves above your hand.
 
 ---
 
@@ -283,36 +290,26 @@ The sound design is restrained and close-up, like a card scene in a 1960s spy fi
 | Cut | A soft lift and set-down |
 | Deal | Each card slides across the felt, panned toward the seat it's going to |
 | Draw / pick up | A card drawn off the stock |
-| Play a card | A crisp landing. Playing to a trick is softer than slapping down a meld. |
+| Play a card | A crisp landing. Playing to a trick is softer than laying down a meld. |
 | Flip / reveal | A short, clean snap |
 | Take a trick | The cards swept together and squared |
-| Chips | A light clink for a bet, a heavier stack pushed in for a raise, a whole stack shoved for all-in, and the pot raked to the winner |
+| Chips | A light clink for a bet, a heavier stack pushed in for a raise, a whole stack shoved for all in, and the pot raked to the winner |
 | Blackjack shoe | A card slid out of the dealing shoe |
-| Bridge bidding | The click of a card from a bidding box |
+| Bidding | The click of a card from a bidding box |
 | Slap (Egyptian Rat Screw) | A flat palm on felt: firm, not comic |
 
-**Cues**
+**Cues:** a lighter lid flicking open when it becomes your turn; a soft felt brush and a small metal latch for the interface.
 
-| Moment | Sound |
-|--------|-------|
-| Your turn | A lighter lid flicking open |
-| Time running low | A wristwatch ticking |
-| Menu | A soft felt brush on hover and a small metal latch on select |
-
-**Stings.** These are short phrases built on the minor-major ninth "spy chord", using vibraphone, a twangy baritone guitar, brushed snare and muted brass:
-
-- **Win:** a short, cool resolution.
-- **Loss:** a low string swell that falls away.
-- **Big moments:** a fuller phrase for a royal flush, a grand slam, shooting the moon or a Klondike clear.
+**Stings.** Short original phrases built on the minor-major ninth "spy chord", using vibraphone, a twangy baritone guitar, brushed snare and muted brass. A cool resolution when you win, a low swell that sinks away when you lose, and a fuller phrase for a royal flush, a slam, shooting the moon, a made Nil, or a Klondike clear.
 
 **How it works.** All sound is generated live with the Web Audio API, so there are no audio files to download.
 
 - Card and chip sounds are built from shaped noise and short resonances.
-- Stings come from small synthesised instruments: plucked strings for the guitar, FM synthesis for the vibraphone, filtered pads for the brass.
+- Stings come from small synthesised instruments: plucked strings (Karplus–Strong) for the guitar, FM synthesis for the vibraphone, filtered detuned saws for the brass.
 - Each venue sets its own reverb, so a card lands differently in the Vault than on the Night Train.
 - Every sound varies slightly in pitch and timing, so repeated deals never sound mechanical.
 
-**Mixer.** There are separate volume levels for Effects, Music and Ambience, plus a master mute. Sound pauses when the tab is hidden.
+**Mixer.** In The House there are separate levels for table sounds, music stings and room ambience, a master level, mute, and buttons to preview each sound. Sound pauses when the tab is hidden.
 
 ---
 
@@ -320,30 +317,36 @@ The sound design is restrained and close-up, like a card scene in a 1960s spy fi
 
 As the rulebook requires, every table always displays:
 
-- the game's objective and how to win
-- the number of players, and whose turn it is
-- current scores, or chips for Hold'em
-- how many cards are left in each pile (stock, discard, waste)
+- the game, its objective and how to win (top line, and the **Rules** panel)
+- the number of players, and whose turn it is (lamplight, highlighted plaque, rail hint)
+- current scores or chips (on each plaque, and in the scorepad)
+- how many cards are left in each pile (stock, discards, shoe) and in each opponent's hand
 - the current round, hand or board number
-- the moves you can make right now. Illegal moves are blocked, and anything you can't do is greyed out.
-
-Each game also has a **How to play** panel with the rules in plain language, so someone new can learn at the table.
+- the moves you can make right now. Illegal moves are blocked: unplayable cards dim and unavailable actions are greyed out.
 
 ---
 
 ## Playing online
 
-1. Choose a game, then **Host online table**. You get a five-letter room code, such as `KQ7HR`.
-2. Friends open the site, choose **Join**, and enter the code.
-3. The host starts the game once everyone has joined. Computer players fill any empty seats.
+**Hosting**
+
+1. Choose a game and take a seat, then tap **Host online table**. You get a five-letter room code, such as `KQ7HR`. Every chair starts open for a friend.
+2. Friends open the site, tap **Join a table** on the games screen, and type the code.
+3. Tap a chair to switch it between a computer player and an open seat. When you **Deal**, any chair still empty is played by a computer.
 
 **Leaving and coming back**
 
-- If a player's connection drops, a computer player takes their seat after a short countdown, so the game doesn't stall.
-- A player who rejoins with the same browser gets their seat back automatically.
-- The host can resume a saved game for up to 12 hours. If the old room code is taken, a new one is issued.
+- If a guest **leaves on purpose**, a computer takes their seat at once, and anyone with the room code may take it over.
+- If a guest **loses connection**, the host sees a countdown: *"Ada lost connection. The computer takes over in 60s unless they rejoin with code …"*. The game doesn't pause; their turn simply waits. After 60 seconds a computer stands in.
+- Either way the seat stays theirs: rejoining from the same browser hands it straight back.
+- While someone is away, the host can tap **Let someone else join** to open their seat to a new player.
+- A stranger who tries to join a game in progress is told the seats are taken, unless a seat has been opened.
+- If the host's connection drops, guests keep trying to reconnect for about two minutes.
+- The host's game is saved for **12 hours**: if the page is closed, **Resume game** on the games screen reopens the room (with a new code if the old one is still busy). Guests see a **Rejoin** card.
 
-**Fair play:** each player's browser receives only what that player is allowed to see. Other players' hands and the order of the deck are never sent to a browser that shouldn't see them.
+**Fair play:** the host's browser runs the game and sends each guest only what that guest may see. Other players' hands and the order of the deck never reach a browser that shouldn't see them.
+
+**How it works:** browsers connect directly over WebRTC with [PeerJS](https://peerjs.com/), which is loaded only when you go online. The public PeerJS server only introduces the browsers. A heartbeat runs every 2 seconds, and a player counts as disconnected after 10 seconds of silence.
 
 ---
 
@@ -351,11 +354,38 @@ Each game also has a **How to play** panel with the rules in plain language, so 
 
 | Level | Behaviour |
 |-------|-----------|
-| **Easy** | Makes legal moves using simple rules of thumb. Good for learning. |
-| **Medium** | Plays solid standard strategy for each game, such as counting trumps, bidding from hand strength and using basic Blackjack strategy. |
-| **Hard** | Keeps track of every card played, infers what opponents might hold, and plays defensively. |
+| **Easy** | Plays legal moves with loose rules of thumb and occasional mistakes. Good for learning. |
+| **Medium** | Plays solid standard strategy for each game. |
+| **Hard** | Medium plus extras: counting cards played, card-counting bets in Blackjack, more simulated deals in Hold'em, faster slaps in Egyptian Rat Screw. |
 
-Computer players make decisions using only what a human in that seat could see. They never look at hidden cards. The same computer players are used to fill dropped online seats and to power the **Hint** button.
+What they do in each family of games:
+
+- **Trick-taking** (Hearts, Spades, Oh Hell, Twenty-Five, Bridge) shares one brain. It wins cheaply when it wants the trick, ducks when it doesn't, covers its partner, and sheds dangerous cards when it can't follow. Bids come from a trick estimate.
+- **Bridge** bidding is a simple natural system:
+  - 1NT with 15–17 points and a balanced hand, 2NT with 20–21.
+  - Otherwise, open your longest suit (five-card majors first).
+  - Responses raise a fit, show a new suit, or bid notrump.
+  - The contract is set from combined points: 25 for game, 33 for a small slam (checked against partner's minimum), 37 for a grand slam.
+- **Hold'em** players score starting hands, then estimate their chance of winning by simulating random deals and compare it with the pot odds.
+- **Blackjack** players use basic strategy.
+- **Big Two** players find every combination they hold.
+- **Rummy** players look for melds and keep useful cards.
+- **Klondike** has an autoplayer that powers the **Hint** button.
+
+Computer players decide using only what a person in that seat could see. They never look at hidden cards. The same players stand in for anyone who drops out of an online game.
+
+---
+
+## Controls
+
+- **Tap** a card to play it. When a card needs a choice (such as an eight's suit), a picker opens.
+- In games where you play several cards (Rummy, Big Two, passing in Hearts), tap cards to **select** them, then use the rail.
+- **Keyboard:**
+  - Tab to a card and press Enter to play it.
+  - On the games screen, the arrow keys move through the hand and Enter opens a briefing.
+  - Escape closes panels.
+- **Klondike:** tap a card to send it to its best place, or **drag** it (with the cards on top of it) where you want it.
+- **Egyptian Rat Screw:** **Space** flips (or takes a pile you've won). **S** slaps, or tap the pile.
 
 ---
 
@@ -366,7 +396,7 @@ There is no build step and nothing to install.
 ```bash
 git clone https://github.com/Drag375o/CARDS.git
 cd CARDS
-# serve the folder with any static server, for example:
+# open index.html directly, or serve the folder:
 npx serve .
 #   or
 python -m http.server 8000
@@ -374,7 +404,18 @@ python -m http.server 8000
 
 Then open `http://localhost:8000` (or the address the server prints).
 
-> Opening `index.html` directly as a file mostly works too, but online play needs the page served over `http(s)`.
+> Online play needs an internet connection, since it loads PeerJS and uses the public PeerJS server to connect browsers.
+
+**Handy links for testing:**
+
+| Link | Opens |
+|------|-------|
+| `index.html#menu` | The games screen |
+| `#brief:bridge` | A game's briefing |
+| `#seat:hearts` | A game's seating screen |
+| `#play:spades` (or `#play:ohhell&n:5`) | A game against computer players straight away |
+| `#venue:noir62`, `#deck:storybook` | Switch the venue or the deck |
+| `#house` | Open The House |
 
 ---
 
@@ -382,33 +423,45 @@ Then open `http://localhost:8000` (or the address the server prints).
 
 ```
 CARDS/
-├── index.html              # app shell and the order scripts load in
+├── index.html                 # app shell; script order is load order
 ├── css/
-│   ├── base.css            # layout, table, hand fan, animations
-│   └── venues/             # riviera, lair, noir62, mayfair, nighttrain, vault
+│   ├── base.css               # scene, table, hand fan, drawer
+│   ├── screens.css            # cold open, game hand, briefing slips
+│   ├── table.css              # seats, rail, overlays, seating, per-game pieces
+│   └── venues/                # riviera, lair, noir62, mayfair, nighttrain, vault
 ├── js/
 │   ├── core/
-│   │   ├── cards.js        # card model, deck building, secure shuffle
-│   │   ├── tricks.js       # shared trick-taking helpers (follow suit, trick winner)
-│   │   ├── hands.js        # poker / Big Two hand evaluation
-│   │   └── registry.js     # list of games and their metadata
-│   ├── games/              # one rules engine per game, no DOM code
-│   │   ├── holdem.js   blackjack.js   klondike.js   rummy.js
-│   │   ├── hearts.js   spades.js      bridge.js     crazy8.js
-│   │   └── bigtwo.js   ers.js         ohhell.js     twentyfive.js
-│   ├── ai/                 # computer players, one file per game
+│   │   ├── cards.js           # card model, decks, secure + seeded shuffle, card audit
+│   │   ├── registry.js        # the twelve games' metadata; engines register here
+│   │   ├── engine.js          # shared engine helpers: events, seats, narration
+│   │   ├── tricks.js          # follow suit, trick winner
+│   │   └── hands.js           # poker hand evaluation (best five of seven)
+│   ├── games/                 # one rules engine per game (no DOM code)
+│   ├── ai/                    # one computer player per game (+ _tricks.js, the shared trick brain)
+│   ├── tables/                # one table view per game (+ _tricks.js, shared trick pieces)
 │   ├── art/
-│   │   ├── cardsvg.js      # shared card geometry, pip layouts, indices
-│   │   ├── decks/          # classic, engraved, storybook, silhouette, inkline, pastel
-│   │   └── backs.js        # card back patterns
-│   ├── net.js              # online rooms (PeerJS)
+│   │   ├── cardsvg.js         # card geometry, pips, indices, outline pips, backs registry
+│   │   ├── backs.js           # card back designs
+│   │   └── decks/             # classic, engraved, storybook, silhouette, inkline, pastel
 │   ├── audio/
-│   │   ├── mixer.js        # volume buses, venue reverb, mute
-│   │   ├── foley.js        # shuffle, deal, flip, chips, slap...
-│   │   └── stings.js       # spy-jazz music stings
-│   └── ui/                 # screens, table rendering, input, saves
-├── tests/                  # headless Node tests (no dependencies)
-├── Rules_Modes.md          # the full rulebook for all 12 games
+│   │   ├── mixer.js           # buses, compressor, venue reverb, synthesis helpers
+│   │   ├── foley.js           # shuffle, deal, flip, chips, slap, cues
+│   │   ├── stings.js          # spy-jazz music stings
+│   │   ├── ambience.js        # a room-tone bed per venue
+│   │   └── controls.js        # sound settings in The House
+│   ├── venues/venues.js       # venue registry (look, acoustics, ambience, suggested deck)
+│   ├── net.js                 # PeerJS transport: rooms, heartbeat, reconnects
+│   └── ui/
+│       ├── prefs.js           # saved preferences
+│       ├── scene.js           # backdrop, subtitles, notices, The House drawer
+│       ├── router.js          # screens
+│       ├── coldopen.js  menu.js  gamecard.js  seating.js
+│       ├── table.js           # the game table: host + renderer
+│       ├── online.js          # online rooms, lobby, takeovers, resume/rejoin
+│       └── app.js             # boot and test links
+├── tools/deck-preview.html    # every card of every deck
+├── tests/                     # headless Node tests (no dependencies)
+├── Rules_Modes.md             # the full rulebook for all 12 games
 └── README.md
 ```
 
@@ -416,48 +469,72 @@ CARDS/
 
 ## Architecture
 
-The design follows two earlier projects, *Auction XI* and *Home-made Mahjong*: plain HTML, CSS and JavaScript, no framework, and a rules engine kept separate from everything else.
+The design follows two earlier projects, *Auction XI* and *Home-made Mahjong*: plain HTML, CSS and JavaScript, no framework, and a rules engine kept separate from everything else. The interface and its look are entirely new.
 
 **One shared namespace.** Every file is a self-running module that attaches to `window.C52`. The order of the `<script>` tags in `index.html` decides what loads first.
 
-**Rules engines are pure.** Every game in `js/games/` exposes the same interface and never touches the page:
+**Rules engines are pure.** Every game in `js/games/` registers the same interface and never touches the page:
 
 | Function | Purpose |
 |----------|---------|
-| `meta` | Name, player counts, options and objective text |
-| `createMatch(players, options, rng)` | Builds a new match as a plain, JSON-safe state object |
-| `actionsFor(state, seat)` | Every move that seat may make right now |
-| `apply(state, seat, action)` | Makes a move, but only if it appears in `actionsFor`. Anything else is rejected. |
+| `options` | The house-rule choices shown on the seating card |
+| `setup({ n, names, options }, rng)` | Builds a new match as a plain, JSON-safe state object |
+| `actions(state, seat)` | Every move that seat may make right now (empty if it isn't their move) |
+| `apply(state, seat, action, rng)` | Makes a move, but only if it is legal. Anything else is rejected. |
 | `view(state, seat)` | The state with everything hidden that this seat isn't allowed to see |
-| `result(state)` | Whether the round or game is over, plus scores and winners |
+| `zones(state)` | Every pile of cards, for the card audit |
 
-Because the engine never touches the page, the same code runs the game in the browser, on the online host, inside the computer players and in the tests. The engine also moves the game forward automatically when no one has a decision to make, such as dealing, flipping the trump card, or the dealer drawing in Blackjack.
+Engines also keep a public **event list** (who did what, which sound to play). The table uses it for subtitles, sounds, the ledger and animations, and online guests receive it in their view.
 
-**Cards.** A card is a two-character code: rank `A 2–9 T J Q K` followed by suit `S H D C`, so `TH` is the ten of hearts. Each match tracks where every card is, so a card can never be in two places at once, and a check confirms that all 52 cards are accounted for after every move. Shuffling uses Fisher–Yates with `crypto.getRandomValues`. Tests use a seeded random number generator so games can be replayed exactly.
+Because the engine never touches the page, the same code runs the game in the browser, on the online host, inside the computer players and in the tests.
 
-**Online play is peer-to-peer and host-authoritative.** Connections run directly between browsers over WebRTC using [PeerJS](https://peerjs.com/). The public PeerJS server is used only to connect players, at peer ID `cards52-room-<CODE>`. The host's browser runs the engine and sends each guest `view(state, seat)` after every change. Guests send only the moves they want to make. Other details:
+**The table is a host and a renderer.** The *host* owns the match state, applies moves, runs computer players (each on its own timer, cancelled on any change) and publishes views. The *renderer* draws one seat's view and turns clicks into moves. Online, the host also sends each guest their view, and a guest's renderer works exactly like a local one.
 
-- Room codes use five letters and leave out I and O, so codes are easy to read.
-- Each guest gets a random seat token that lets them reclaim their seat.
-- A heartbeat runs every 2 s, and a player is treated as disconnected after 10 s of silence.
-- All networking code is in `net.js`, so the connection method can be replaced without changing any game code.
+Each game supplies a small **table description** in `js/tables/`. It covers what goes in the middle of the felt, what each seat's label says, the top line, the hand, the action rail and the rules text.
 
-**Saved data.** Settings, the host's saved game and the last joined room are stored in the browser's `localStorage`.
+**Cards.** A card is a two-character code: rank `A 2–9 T J Q K` followed by suit `S H D C`, so `TH` is the ten of hearts.
+
+- Each match tracks where every card is. The tests confirm that all 52 cards are accounted for, each in exactly one place, after every move.
+- Shuffling uses Fisher–Yates with `crypto.getRandomValues`. Tests use a seeded generator so games can be replayed exactly.
+
+**Saved data** in the browser's `localStorage`:
+
+- preferences
+- seating choices for each game
+- the host's online game, for 12 hours
+- a guest's seat pass
 
 ---
 
 ## Testing
 
-The test suite runs headless in Node with no dependencies. Both reference projects ran their simulations as one-off scripts. Here they live in `tests/`:
+The test suite runs headless in Node with no dependencies:
 
 ```bash
-node tests/run.js
+node tests/run.js            # everything
+node tests/run.js bridge     # files whose name contains "bridge"
+SLOW=1 node tests/run.js     # also list the slowest tests
 ```
 
+What the tests cover:
+
 - **Card conservation:** after every move, all 52 cards are present and each is in exactly one place.
-- **Legal-move fuzzing:** thousands of random but legal games per title must never crash or reach a state where nobody can move.
-- **Rule fixtures:** fixed deals check specific rulings, such as the Twenty-Five trump order, Bridge scores, Big Two hand comparison, Hearts shooting the moon, and Blackjack splits and soft totals.
-- **Computer-vs-computer runs:** whole matches between computer players to check that scoring adds up and every game ends.
+- **Computer-vs-computer games:** whole games for every title (40 each; 6 for Hold'em, whose players run many simulations). Every one must finish with every card accounted for.
+- **Random-move games:** thousands of random but legal moves per title must never crash or lose a card.
+- **No peeking:** each player's view must never contain another player's hidden cards.
+- **Rule checks** with arranged deals, for example:
+  - the Twenty-Five trump order and reneging
+  - Bridge duplicate scores (made, doubled, redoubled, undertricks) and the 16-board cycle
+  - Big Two hand ranking and straights
+  - Hearts passing and shooting the moon
+  - Spades bags and Nil
+  - Oh Hell's dealer restriction
+  - Blackjack payouts, splits, doubles and soft 17
+  - Hold'em blinds, heads-up order and side pots
+  - Klondike moves and undo
+  - Rummy melds
+  - Crazy Eights scoring
+  - poker hand evaluation, including the wheel and kickers
 
 ---
 
@@ -470,41 +547,11 @@ The game is a static site, so any static host works.
 
 ---
 
-## Roadmap
-
-Each item is committed and pushed on its own as it's finished.
-
-- [ ] Card engine: card model, deck, shuffle, card-location tracking
-- [ ] SVG card faces and backs: Classic deck
-- [ ] Venue system + Riviera Salon
-- [ ] Sound engine: shuffle, deal, flip, chips, cues
-- [ ] Cold open, game hand menu and table seating
-- [ ] 03 Klondike Solitaire
-- [ ] 02 Blackjack
-- [ ] 08 Crazy Eights
-- [ ] 05 Hearts
-- [ ] 06 Spades
-- [ ] 11 Oh Hell
-- [ ] 04 Rummy
-- [ ] 09 Big Two
-- [ ] 12 Twenty-Five
-- [ ] 10 Egyptian Rat Screw
-- [ ] 01 Texas Hold'em
-- [ ] 07 Contract Bridge
-- [ ] Computer players: Easy / Medium / Hard
-- [ ] Online rooms
-- [ ] Remaining decks: Engraved, Storybook, Silhouette, Ink Line, Pastel
-- [ ] Remaining venues: The Lair, Noir '62, Mayfair Bar, Night Train, The Vault
-- [ ] Music stings and venue ambience
-- [ ] Settings and accessibility options
-- [ ] Test suite and hosting
-
----
-
 ## Credits
 
 - The deck designs are based on reference artwork from [Vecteezy.com](https://www.vecteezy.com). All card art in this repository is original SVG drawn for the project. The reference files themselves are not distributed here.
 - Online play uses [PeerJS](https://peerjs.com/).
+- Typefaces: Bodoni Moda, Jost, Cormorant Garamond and Courier Prime, from Google Fonts.
 
 ## Disclaimer
 
