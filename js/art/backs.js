@@ -75,3 +75,28 @@
       [60, 290].map((y) => `<path d="M95 ${y}h60" stroke="#C9A55A" stroke-width=".8"/><circle cx="125" cy="${y}" r="3" fill="#C9A55A"/>`).join(''),
   });
 })(typeof window !== 'undefined' ? window : globalThis);
+
+/* Noir: a black panel with a fine double white frame and a small spade. */
+(function (root) {
+  'use strict';
+  const Art = root.C52.Art;
+  Art.registerBack('noir', {
+    name: 'Noir',
+    border: '#0d0d0d',
+    edge: '#000',
+    draw: (rx) =>
+      `<rect x="16" y="16" width="218" height="318" rx="${Math.max(rx - 6, 4)}" fill="#141414" stroke="#e8e8e8" stroke-width="1.2"/>` +
+      `<rect x="24" y="24" width="202" height="302" rx="${Math.max(rx - 9, 3)}" fill="none" stroke="#e8e8e8" stroke-width=".5"/>` +
+      Art.pip('S', 125, 175, 44, '#e8e8e8'),
+  });
+  /* Mauve: the die-cut sticker card's back, with a peach diamond. */
+  Art.registerBack('mauve', {
+    name: 'Mauve',
+    border: '#ffffff',
+    edge: '#cfc6c0',
+    draw: (rx) =>
+      `<rect x="16" y="16" width="218" height="318" rx="${Math.max(rx - 6, 4)}" fill="#876B6C"/>` +
+      `<rect x="16" y="16" width="218" height="26" rx="${Math.max(rx - 6, 4)}" fill="#76585A"/>` +
+      `<path d="M125 80L172 175L125 270L78 175Z" fill="#F1DFD3"/><path d="M125 80L172 175L125 270L134 175Z" fill="#E9C7B1" opacity=".7"/>`,
+  });
+})(typeof window !== 'undefined' ? window : globalThis);

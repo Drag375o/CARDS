@@ -40,6 +40,20 @@
     return `<path d="${SUIT_PATH[suit]}" fill="${fill}" transform="translate(${x - size / 2} ${y - size / 2}) scale(${s})${rot}"${extra || ''}/>`;
   }
 
+  /** A pip in a deck's own style: filled, or outlined when deck.outline is set (its stroke width). */
+  function deckPip(deck, suit, x, y, size, ink, flip) {
+    if (deck && deck.outline) {
+      // A thick inked shape with the paper colour laid over it: only the outer edge shows,
+      // so overlapping parts (the club's circles) don't leave lines inside.
+      const sw = ((deck.outline * 100) / size) * 2;
+      return (
+        pip(suit, x, y, size, ink, flip, ` stroke="${ink}" stroke-width="${sw.toFixed(2)}" stroke-linejoin="round"`) +
+        pip(suit, x, y, size, deck.paper || '#FFFFFF', flip)
+      );
+    }
+    return pip(suit, x, y, size, ink, flip);
+  }
+
   /* ---------- pip layouts for 2–10 ---------- */
 
   const L = 80;
@@ -61,9 +75,15 @@
   const rankNumber = (r) => (r === 'T' ? 10 : Number(r));
 
   /** All pips for a numbered card. Pips below the middle are drawn upside down. */
-  function pipLayout(code, fill, size) {
+  function pipLayout(code, fill, size, deck) {
     const n = rankNumber(code[0]);
-    return PIPS[n].map(([x, y]) => pip(code[1], x, y, size, fill, y > CY + 1)).join('');
+    const spots = (deck && deck.layout && deck.layout(n)) || PIPS[n].map(([x, y]) => [x, y, y > CY + 1 ? 180 : 0]);
+    return spots
+      .map(([x, y, rot]) => {
+        if (!rot || rot === 180) return deckPip(deck, code[1], x, y, size, fill, rot === 180);
+        return `<g transform="rotate(${rot} ${x} ${y})">${deckPip(deck, code[1], x, y, size, fill, false)}</g>`;
+      })
+      .join('');
   }
 
   /* ---------- colours ---------- */
@@ -84,8 +104,8 @@
     const one = (rank === '10' ? `letter-spacing="-3"` : '');
     const corner =
       `<text x="${26 * k}" y="${50 * k}" text-anchor="middle" font-family="${f}" font-weight="${weight}" ` +
-      `font-size="${fs}" fill="${fill}" ${one}>${rank}</text>` +
-      pip(code[1], 26 * k, 72 * k, 24 * k, fill);
+      `font-size="${fs}" fill="${fill}" ${one}${deck.indexStyle ? ' font-style="' + deck.indexStyle + '"' : ''}>${rank}</text>` +
+      deckPip(deck, code[1], 26 * k, 72 * k, 24 * k, fill, false);
     return corner + `<g transform="rotate(180 ${CX} ${CY})">${corner}</g>`;
   }
 
@@ -94,9 +114,12 @@
   function frame(inner, deck, title) {
     const rx = deck.radius == null ? 14 : deck.radius;
     const stroke = deck.edge || '#bdb6a6';
+    const ew = deck.edgeWidth || 2;
+    const half = ew / 2;
     return (
       `<svg class="c52-card" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${title}">` +
-      `<rect x="1" y="1" width="${W - 2}" height="${H - 2}" rx="${rx}" fill="${deck.paper || '#FFFFFF'}" stroke="${stroke}" stroke-width="2"/>` +
+      `<rect x="${half}" y="${half}" width="${W - ew}" height="${H - ew}" rx="${rx}" fill="${deck.paper || '#FFFFFF'}" stroke="${stroke}" stroke-width="${ew}"/>` +
+      (deck.decor ? deck.decor() : '') +
       inner +
       `</svg>`
     );
@@ -155,18 +178,18 @@
     const fill = palette[code[1]];
     const r = code[0];
     let body;
-    if (r === 'A') body = deck.ace ? deck.ace(code, fill, api) : pip(code[1], CX, CY, 96, fill);
+    if (r === 'A') body = deck.ace ? deck.ace(code, fill, api) : deckPip(deck, code[1], CX, CY, 96, fill, false);
     else if (r === 'J' || r === 'Q' || r === 'K') body = deck.court(code, fill, api);
-    else body = deck.pips ? deck.pips(code, fill, api) : pipLayout(code, fill, deck.pipSize || 46);
+    else body = deck.pips ? deck.pips(code, fill, api) : pipLayout(code, fill, deck.pipSize || 46, deck);
     const title = C52.Cards ? C52.Cards.name(code) : code;
     return frame(body + cornerIndex(code, fill, deck, o.largeIndex), deck, title);
   }
 
-  const api = { W, H, CX, CY, SUIT_PATH, pip, pipLayout, PIPS, circle };
+  const api = { W, H, CX, CY, SUIT_PATH, pip, pipLayout, deckPip, PIPS, circle };
 
   C52.Art = {
     W, H, SUIT_PATH, TWO_COLOUR, FOUR_COLOUR,
-    pip, pipLayout, registerDeck, registerBack, card, defs,
+    pip, pipLayout, deckPip, registerDeck, registerBack, card, defs,
     decks: () => Object.values(DECKS),
     backs: () => Object.keys(BACKS).map((id) => ({ id, name: BACKS[id].name })),
     deck: (id) => DECKS[id],
