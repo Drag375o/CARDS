@@ -254,7 +254,7 @@
 
     // Centre, with arrival animation for cards that are new.
     const center = $('#center');
-    center.innerHTML = T.center(view, ui);
+    center.innerHTML = fixYou(T.center(view, ui)); // labels on the felt say "You take it", not "You takes it"
     const now = new Set();
     center.querySelectorAll('[data-card]').forEach((el) => {
       const c = el.dataset.card;
@@ -272,7 +272,7 @@
     R.centerCards = now;
     if (T.afterRender) T.afterRender(center, view, R.actions, ui);
 
-    $('#status').innerHTML = T.status ? T.status(view) : '';
+    $('#status').innerHTML = T.status ? fixYou(T.status(view)) : '';
     drawHand();
     drawRail();
     drawPhaseOverlay();
