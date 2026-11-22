@@ -1,0 +1,45 @@
+/* Mayfair Bar — a modern cocktail bar after closing. An oxblood leather
+ * card table, a walnut rim with a brass inlay, amber back-lit shelves. */
+
+[data-venue='mayfair'] {
+  --bg: #0d0806;
+  --ink: #f4e9d8;
+  --ink-dim: rgba(244, 233, 216, 0.6);
+  --accent: #e0b060;
+  --felt-1: #6e2725;
+  --felt-2: #4c1816;
+  --felt-3: #2a0b0a;
+  --rail-1: #6a4426;
+  --rail-2: #2b1a0d;
+  --rail-line: #d6a957;
+  --lamp: rgba(255, 196, 120, 0.2);
+  --panel: rgba(18, 10, 8, 0.93);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+}
+
+[data-venue='mayfair'] .backdrop {
+  background:
+    radial-gradient(ellipse 90% 30% at 50% 26%, rgba(255, 170, 70, 0.22), transparent 70%),
+    linear-gradient(180deg, #2a1a10 0%, #1a0f09 55%, #0b0604 100%);
+}
+/* Back-lit shelves of bottles. */
+[data-venue='mayfair'] .backdrop::before {
+  top: 6%; bottom: 52%;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 calc(33% - 3px), rgba(255, 200, 120, 0.4) calc(33% - 3px) 33%),
+    repeating-linear-gradient(90deg, rgba(255, 170, 80, 0.16) 0 14px, rgba(120, 60, 20, 0.12) 14px 22px, transparent 22px 30px, rgba(255, 210, 140, 0.12) 30px 38px, transparent 38px 54px);
+  filter: blur(1.5px);
+  opacity: 0.9;
+}
+/* Warm pools of light along the bar. */
+[data-venue='mayfair'] .backdrop::after {
+  filter: blur(5px);
+  background:
+    radial-gradient(circle at 18% 30%, rgba(255, 190, 110, 0.35) 0 10px, transparent 26px),
+    radial-gradient(circle at 42% 22%, rgba(255, 190, 110, 0.28) 0 8px, transparent 22px),
+    radial-gradient(circle at 63% 28%, rgba(255, 190, 110, 0.32) 0 9px, transparent 24px),
+    radial-gradient(circle at 84% 24%, rgba(255, 190, 110, 0.3) 0 10px, transparent 26px);
+}
+/* Leather: a soft sheen instead of felt nap. */
+[data-venue='mayfair'] .felt { background: radial-gradient(ellipse 50% 35% at 45% 30%, rgba(255, 220, 190, 0.12), transparent 70%), radial-gradient(ellipse 70% 65% at 50% 42%, var(--felt-1) 0%, var(--felt-2) 58%, var(--felt-3) 100%); }
+[data-venue='mayfair'] .felt::after { opacity: 0.1; }
