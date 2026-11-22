@@ -33,6 +33,8 @@
     return { x: +(50 + 47 * Math.cos(a)).toFixed(2), y: +(50 + (s < 0 ? 40 : 52) * s).toFixed(2), a };
   }
   const relSeat = (seat, me, n) => (seat - me + n) % n;
+  /** Seat position for the current game (a table description may lay seats out its own way). */
+  const pos = (rel, n) => (R.T && R.T.seatPos ? R.T.seatPos(rel, n) : seatPos(rel, n));
 
   /* =================================================================
    *  HOST
@@ -151,7 +153,7 @@
     },
     /** Position on the felt between the centre and a seat (for trick cards). */
     toward(seat, dist) {
-      const p = seatPos(relSeat(seat, R.me, R.view.n), R.view.n);
+      const p = pos(relSeat(seat, R.me, R.view.n), R.view.n);
       const d = dist == null ? 0.38 : dist;
       return { x: +(50 + (p.x - 50) * d).toFixed(2), y: +(50 + (p.y - 50) * d * 1.05).toFixed(2), a: p.a };
     },
@@ -232,7 +234,7 @@
     $('#seats').innerHTML = view.names
       .map((nm, seat) => {
         if (seat === R.me) return '';
-        const p = seatPos(relSeat(seat, R.me, view.n), view.n);
+        const p = pos(relSeat(seat, R.me, view.n), view.n);
         return seatHTML(view, seat, p);
       })
       .join('');
@@ -240,7 +242,7 @@
 
     // Lamp toward the active seat.
     if (view.turn != null) {
-      const p = seatPos(relSeat(view.turn, R.me, view.n), view.n);
+      const p = pos(relSeat(view.turn, R.me, view.n), view.n);
       $('#felt').style.setProperty('--lamp-x', p.x * 0.6 - 10 + '%');
       $('#felt').style.setProperty('--lamp-y', p.y * 0.6 - 15 + '%');
     }
@@ -255,7 +257,7 @@
       if (!R.centerCards.has(c) && R.prevPhase != null) {
         const seat = el.dataset.seat != null ? Number(el.dataset.seat) : null;
         if (seat != null) {
-          const p = seatPos(relSeat(seat, R.me, view.n), view.n);
+          const p = pos(relSeat(seat, R.me, view.n), view.n);
           el.style.setProperty('--from-x', (Math.cos(p.a) * 30).toFixed(1) + 'vw');
           el.style.setProperty('--from-y', (Math.sin(p.a) * 34).toFixed(1) + 'vh');
         }
@@ -568,7 +570,7 @@
 
   function panFor(seat) {
     if (seat == null || !R.view) return 0;
-    const p = seatPos(relSeat(seat, R.me, R.view.n), R.view.n);
+    const p = pos(relSeat(seat, R.me, R.view.n), R.view.n);
     return +(Math.cos(p.a) * 0.7).toFixed(2);
   }
 
