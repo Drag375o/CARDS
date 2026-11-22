@@ -167,6 +167,7 @@
         const a = from[0] === 'f' ? null : bestMove(ms);
         if (a) return ui.submit(a);
         C52.Sound.play('brush');
+        C52.Scene.subtitle(from[0] === 'f' ? 'Drag a card to take it back down from its foundation.' : 'That card has nowhere to go right now.', 2400);
         return;
       }
       group.forEach((g) => (g.style.visibility = 'hidden'));
@@ -175,6 +176,7 @@
       const target = dropTarget(under, center, ev);
       const a = target && ms.find((m) => m.to === target);
       if (a) return ui.submit(a);
+      if (target) C52.Scene.subtitle("It can't go there. Build down in alternating colours; only a King goes on an empty column.", 3000);
       group.forEach((g) => {
         g.style.transition = 'transform .25s var(--ease)';
         g.style.transform = '';

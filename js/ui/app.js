@@ -17,9 +17,14 @@
     root.addEventListener('unhandledrejection', (e) => say((e.reason && e.reason.message) || e.reason));
   }
 
+  // Shown in The House, so it's easy to check which version a browser is running.
+  C52.VERSION = '2026.11.23c';
+
   function boot() {
     showErrors();
     C52.Scene.mount();
+    C52.Scene.addDrawerSection(() => `<p class="lede" style="margin-top:28px;font-size:13px;font-style:normal">Version ${C52.VERSION}</p>`);
+    if (root.console) console.info('52 Cards version ' + C52.VERSION);
     C52.Prefs.onChange((p, patch) => {
       if (patch.venue || patch.deck || 'back' in patch || 'fourColour' in patch || 'largeIndex' in patch) C52.UI.refresh();
     });
