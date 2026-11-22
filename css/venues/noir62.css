@@ -1,0 +1,44 @@
+/* Noir '62 — a back room after midnight, in black and white.
+ * Worn felt under a single bulb, crossed by stripes of light from the
+ * venetian blinds. Everything on the stage is drained of colour. */
+
+[data-venue='noir62'] {
+  --bg: #080808;
+  --ink: #ececec;
+  --ink-dim: rgba(236, 236, 236, 0.6);
+  --accent: #d8d8d8;
+  --felt-1: #4a4a4a;
+  --felt-2: #2c2c2c;
+  --felt-3: #151515;
+  --rail-1: #3a3a3a;
+  --rail-2: #111;
+  --rail-line: #bdbdbd;
+  --lamp: rgba(255, 255, 255, 0.16);
+  --panel: rgba(12, 12, 12, 0.95);
+  --panel-line: rgba(220, 220, 220, 0.25);
+  --font-caption: 'Courier Prime', 'Courier New', monospace;
+}
+
+[data-venue='noir62'] .backdrop {
+  background:
+    radial-gradient(ellipse 30% 22% at 50% 0%, rgba(255, 255, 255, 0.28), transparent 70%),
+    linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 60%, #050505 100%);
+}
+/* Rain streaks on the window glass behind. */
+[data-venue='noir62'] .backdrop::before {
+  opacity: 0.18;
+  background: repeating-linear-gradient(100deg, rgba(255, 255, 255, 0.5) 0 1px, transparent 1px 23px);
+  mask-image: linear-gradient(180deg, #000 0%, transparent 55%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 55%);
+  animation: noir-rain 0.9s linear infinite;
+}
+@keyframes noir-rain { from { background-position: 0 0; } to { background-position: -8px 60px; } }
+/* Venetian blinds: stripes of light thrown across the whole scene. */
+[data-venue='noir62'] .vignette {
+  background:
+    repeating-linear-gradient(168deg, rgba(255, 255, 255, 0.075) 0 22px, transparent 22px 52px),
+    radial-gradient(ellipse 75% 70% at 50% 45%, transparent 50%, rgba(0, 0, 0, 0.82) 100%);
+}
+/* Black and white, a little crushed. */
+[data-venue='noir62'] #stage { filter: grayscale(1) contrast(1.12); }
+[data-venue='noir62'] .subtitle { font-style: normal; letter-spacing: 0.02em; }
