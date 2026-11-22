@@ -34,7 +34,7 @@
       if (e.key === 'Escape' || e.key.length === 1 || e.key === 'Enter') go();
     };
     root.addEventListener('keydown', onKey);
-    el.focus();
+    el.focus({ preventScroll: true });
   }
 
   function go() {

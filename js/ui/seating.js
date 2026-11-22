@@ -175,7 +175,7 @@
       params.seats.forEach((s) => s.kind === 'open' && (s.kind = 'cpu'));
       C52.UI.show('table', params);
     };
-    stageEl.querySelector('#deal').focus();
+    stageEl.querySelector('#deal').focus({ preventScroll: true });
   }
 
   const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);

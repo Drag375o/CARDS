@@ -55,7 +55,7 @@
           openBriefing(el.dataset.game);
         } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
           const n = cards[(i + (e.key === 'ArrowRight' ? 1 : cards.length - 1)) % cards.length];
-          n.focus();
+          n.focus({ preventScroll: true });
           C52.Sound.play('brush');
         }
       });
@@ -107,7 +107,7 @@
       C52.Sound.play('latch');
       C52.UI.show('seating', { game: id });
     };
-    (playable ? seat : b.querySelector('#back-to-hand')).focus();
+    (playable ? seat : b.querySelector('#back-to-hand')).focus({ preventScroll: true });
   }
 
   /* ---------- online: join, resume, rejoin ---------- */
@@ -156,7 +156,7 @@
     b.setAttribute('aria-hidden', 'false');
     stageEl.querySelector('#hand').classList.add('lowered');
     const code = b.querySelector('#join-code');
-    code.focus();
+    code.focus({ preventScroll: true });
     b.querySelector('#back-to-hand').onclick = closeBriefing;
     const go = () => {
       const c = C52.Net.cleanCode(code.value);
@@ -178,7 +178,7 @@
     b.setAttribute('aria-hidden', 'true');
     stageEl.querySelector('#hand').classList.remove('lowered');
     const card = stageEl.querySelector('.game-hand .card');
-    if (card) card.focus();
+    if (card) card.focus({ preventScroll: true });
   }
 
   function leave() {

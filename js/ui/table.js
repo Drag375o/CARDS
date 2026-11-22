@@ -299,7 +299,8 @@
       mini += `<div class="card" style="transform:translateX(calc(-50% + ${k * 9}px)) rotate(${k * 5}deg)">${C52.Art.card(null, Object.assign({}, C52.Prefs.look(), { faceDown: true }))}</div>`;
     }
     const info = R.T.seatInfo ? R.T.seatInfo(view, seat) : count ? count + (count === 1 ? ' card' : ' cards') : '';
-    const cls = ['seat', view.turn === seat ? 'active' : '', R.T.seatOut && R.T.seatOut(view, seat) ? 'out' : ''].join(' ');
+    // Seats across the far side hold their cards below the plaque, clear of the top line.
+    const cls = ['seat', view.turn === seat ? 'active' : '', R.T.seatOut && R.T.seatOut(view, seat) ? 'out' : '', p.y < 25 ? 'far' : ''].join(' ');
     return `<div class="${cls}" style="left:${p.x}%;top:${p.y}%">
       ${count ? `<div class="mini-hand">${mini}</div>` : ''}
       ${seatPlaque(view, seat)}
@@ -456,7 +457,7 @@
     };
     if (onWire) onWire(o);
     const f = o.querySelector('button.btn.primary, button');
-    if (f) f.focus();
+    if (f) f.focus({ preventScroll: true });
   }
   function closeOverlay() {
     const o = $('#overlay');

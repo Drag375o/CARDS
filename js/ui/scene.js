@@ -26,6 +26,15 @@
       </div>`
     );
     $('#house-btn').addEventListener('click', () => toggleDrawer());
+    // The scene never scrolls: if anything (focus, a long panel) nudges it, put it straight back,
+    // so the top bar with Leave and The House can't be pushed off screen.
+    ['#scene', '#stage'].forEach((sel) => {
+      const el = $(sel);
+      el.addEventListener('scroll', () => {
+        if (el.scrollTop || el.scrollLeft) el.scrollTo(0, 0);
+      });
+    });
+    root.addEventListener('scroll', () => (root.scrollY || root.scrollX) && root.scrollTo(0, 0));
     doc.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && $('#drawer').classList.contains('open')) toggleDrawer(false);
     });
