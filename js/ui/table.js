@@ -540,7 +540,7 @@
             .map((r, ri) => `<tr${r.total ? ' class="total"' : ''}>${(r.cells || r).map((c) => `<td>${c}</td>`).join('')}</tr>`)
             .join('')}</tbody></table>`
         : '';
-    const stamp = over && view.winners ? `<p class="winner-stamp">${esc(C52.Engine.andList(view.winners.map((w) => view.names[w])))} ${view.winners.length > 1 ? 'win' : 'wins'}</p>` : '';
+    const stamp = over && view.winners && view.winners.length ? `<p class="winner-stamp">${esc(fixYou(C52.Engine.andList(view.winners.map((w) => view.names[w])) + (view.winners.length > 1 ? ' win' : ' wins')))}</p>` : '';
     const buttons = over
       ? `<button class="btn primary" id="db-again">Deal again</button><button class="btn ghost" id="db-leave">Leave the table</button>`
       : next
@@ -548,7 +548,7 @@
       : `<p class="slip-line">Waiting for the host to deal the next round…</p>`;
     overlay(
       `<article class="slip wide"><p class="slip-file">${over ? 'DEBRIEF' : 'ROUND ' + view.round} &middot; ${esc(C52.Games.meta(R.game).name.toUpperCase())}</p>
-        <h2>${esc(s.title || (over ? 'Game over' : 'Round over'))}</h2>${s.note ? `<p class="slip-line">${s.note}</p>` : ''}
+        <h2>${esc(fixYou(s.title || (over ? 'Game over' : 'Round over')))}</h2>${s.note ? `<p class="slip-line">${fixYou(s.note)}</p>` : ''}
         ${stamp}${table}<div class="slip-actions">${buttons}</div></article>`,
       (el) => {
         const q = (id) => el.querySelector(id);
@@ -585,8 +585,8 @@
     let text = '';
     fresh.forEach((ev) => {
       if (ev.text) {
-        text = ev.text;
-        R.ledger.push(ev.text);
+        text = fixYou(ev.text);
+        R.ledger.push(text);
       }
       if (ev.sound === 'deal' && ev.count) {
         const n = Math.min(ev.count, 14);
@@ -663,6 +663,8 @@
   }
 
   const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  /** Only the viewer's own seat can be "You". */
+  const fixYou = (s) => (R.view && R.view.names[R.me] === 'You' ? C52.Engine.youify(s) : s);
 
   C52.Screens.table = { enter, leave, refresh };
   C52.Table = { seatPos, relSeat, Host, receive, ui, openChooser, closeOverlay, R };

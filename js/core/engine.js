@@ -81,5 +81,17 @@
 
   const clone = (x) => JSON.parse(JSON.stringify(x));
 
-  C52.Engine = { emit, next, nm, base, baseView, legal, cardName, andList, clone };
+  /** Narration is third person; when the viewer is called "You", fix the verbs: "You draws" -> "You draw". */
+  const IRREGULAR = { is: 'are', has: 'have', goes: 'go', does: 'do', wins: 'win', "isn't": "aren't" };
+  function youify(text) {
+    return String(text).replace(/\bYou (\w+'?\w*)/g, (m, verb) => {
+      if (IRREGULAR[verb]) return 'You ' + IRREGULAR[verb];
+      if (/(ss|sh|ch|x|z)es$/.test(verb)) return 'You ' + verb.slice(0, -2);
+      if (/[^aeiou]ies$/.test(verb)) return 'You ' + verb.slice(0, -3) + 'y';
+      if (/[^s]s$/.test(verb) && verb.length > 2) return 'You ' + verb.slice(0, -1);
+      return m;
+    });
+  }
+
+  C52.Engine = { emit, next, nm, base, baseView, legal, cardName, andList, clone, youify };
 })(typeof window !== 'undefined' ? window : globalThis);

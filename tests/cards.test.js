@@ -91,3 +91,13 @@ test('audit finds missing, duplicate and unknown cards', () => {
 test('sortHand groups by suit then rank', () => {
   assertEq(K.sortHand(['2H', 'AS', 'KH', '3S'], '23456789TJQKA', 'SH'), ['3S', 'AS', '2H', 'KH']);
 });
+
+test('youify conjugates narration for the viewer', () => {
+  const Y = C52.Engine.youify;
+  assertEq(Y('You draws from the stock.'), 'You draw from the stock.');
+  assertEq(Y('You passes. Bidding is done. You leads.'), 'You pass. Bidding is done. You lead.');
+  assertEq(Y('You is down to one card.'), 'You are down to one card.');
+  assertEq(Y('You wins the game'), 'You win the game');
+  assertEq(Y('You reaches 25'), 'You reach 25');
+  assertEq(Y('You and Mr Valentine win'), 'You and Mr Valentine win');
+});
