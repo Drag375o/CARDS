@@ -22,7 +22,8 @@ function simulate(id, seed, opts) {
       const acts = eng.actions(st, seat);
       if (!acts.length) continue;
       const v = eng.view(st, seat);
-      const a = opts.random ? acts[Math.floor(rng() * acts.length)] : ai.decide(v, acts, levels[(seat + seed) % 3], rng) || acts[0];
+      let a = opts.random ? acts[Math.floor(rng() * acts.length)] : ai.decide(v, acts, levels[(seat + seed) % 3], rng) || acts[0];
+      if (a.choose) a = ai.decide(v, acts, 'easy', rng); // "choose N cards" moves come from the computer player
       eng.apply(st, seat, a, rng);
       moved = true;
     }
@@ -81,7 +82,8 @@ for (const g of C52.Games.list()) {
       for (let seat = 0; seat < n; seat++) {
         const acts = eng.actions(st, seat);
         if (acts.length) {
-          eng.apply(st, seat, acts[0], rng);
+          const a = acts[0].choose ? C52.AI[g.id].decide(eng.view(st, seat), acts, 'easy', rng) : acts[0];
+          eng.apply(st, seat, a, rng);
           break;
         }
       }

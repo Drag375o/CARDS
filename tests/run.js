@@ -17,6 +17,7 @@ const SCRIPTS = [
   'js/core/cards.js',
   'js/core/registry.js',
   'js/core/engine.js',
+  'js/core/tricks.js',
   'js/art/cardsvg.js',
   'js/art/backs.js',
   'js/art/decks/classic.js',
