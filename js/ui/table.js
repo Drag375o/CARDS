@@ -49,7 +49,7 @@
     timers: [],
     listeners: [],
 
-    start(game, seats, options) {
+    start(game, seats, options, restore) {
       this.stop();
       this.game = game;
       this.engine = C52.Games.engine(game);
@@ -57,7 +57,7 @@
       this.seats = seats;
       this.options = options;
       this.rng = C52.Cards.secureRng();
-      this.st = this.engine.setup({ n: seats.length, names: seats.map((s) => s.name), options }, this.rng);
+      this.st = restore || this.engine.setup({ n: seats.length, names: seats.map((s) => s.name), options }, this.rng);
       this.changed();
     },
 
@@ -90,6 +90,7 @@
 
     publish() {
       this.listeners.forEach((fn) => fn());
+      if (C52.Online && C52.Online.isHost()) C52.Online.publish();
     },
 
     /** Every computer seat with something to do gets its own timer; any change cancels them all. */
@@ -98,17 +99,19 @@
       this.timers = [];
       if (!this.ai) return;
       this.seats.forEach((s, seat) => {
-        if (s.kind !== 'cpu') return;
+        if (s.kind !== 'cpu' && !s.standIn) return; // a dropped online player has a computer standing in
         const actions = this.engine.actions(this.st, seat);
         if (!actions.length) return;
         const view = this.engine.view(this.st, seat);
-        const base = this.ai.delay ? this.ai.delay(view, actions, s.level, this.rng) : 650 + this.rng() * 550;
+        const level = s.level || 'medium';
+        const base = this.ai.delay ? this.ai.delay(view, actions, level, this.rng) : 650 + this.rng() * 550;
         const ms = base * (root.C52_SPEED || 1); // C52_SPEED: test hook to fast-forward computer players
         this.timers.push(
           setTimeout(() => {
             const fresh = this.engine.actions(this.st, seat);
             if (!fresh.length) return;
-            const a = this.ai.decide(this.engine.view(this.st, seat), fresh, s.level, this.rng);
+            if (s.kind !== 'cpu' && !s.standIn) return; // the player came back
+            const a = this.ai.decide(this.engine.view(this.st, seat), fresh, level, this.rng);
             if (a === null) return; // the computer chooses to do nothing (e.g. no slap worth making)
             if (!a || !this.act(seat, a)) this.act(seat, fresh[0]);
           }, ms)
@@ -276,7 +279,7 @@
 
   function seatPlaque(view, seat) {
     const cfg = R.seatsCfg && R.seatsCfg[seat];
-    const tag = cfg && cfg.kind === 'cpu' ? `<span class="tag">${C52.Seating.LEVEL_NAME[cfg.level] || ''}</span>` : cfg && cfg.kind === 'remote' ? '<span class="tag">Online</span>' : '';
+    const tag = !cfg ? '' : cfg.standIn ? '<span class="tag">Computer standing in</span>' : cfg.offline ? '<span class="tag">Waiting to rejoin</span>' : cfg.kind === 'cpu' ? `<span class="tag">${C52.Seating.LEVEL_NAME[cfg.level] || ''}</span>` : cfg.kind === 'remote' ? '<span class="tag">Online</span>' : '';
     const sub = R.T.seatSub ? R.T.seatSub(view, seat) : view.scores ? 'Score ' + view.scores[seat] : '';
     const dealer = view.dealer === seat ? '<span class="dealer-puck" title="Dealer">D</span>' : '';
     return `<div class="plaque">${dealer}<span class="nm">${esc(view.names[seat])}${tag}</span><span class="sub">${sub}</span></div>`;
@@ -519,12 +522,17 @@
   }
 
   function confirmLeave() {
+    const host = C52.Online && C52.Online.isHost();
+    const guest = C52.Online && C52.Online.isGuest();
+    const line = host ? 'Leave this online game? It ends for everyone.' : guest ? 'Leave this online game? The computer will play for you.' : 'This game will end.';
     overlay(
-      `<article class="slip"><h2>Leave the table?</h2><p class="slip-line">This game will end.</p>
+      `<article class="slip"><h2>Leave the table?</h2><p class="slip-line">${line}</p>
         <div class="slip-actions"><button class="btn primary" id="lv-yes">Leave</button><button class="btn ghost" id="lv-no">Stay</button></div></article>`,
       (o) => {
         o.querySelector('#lv-yes').onclick = () => {
           closeOverlay();
+          if (host) C52.Online.hostLeave();
+          if (guest) C52.Online.guestLeave();
           C52.Sound.play('brush');
           C52.UI.show('menu', { brief: R.game });
         };
@@ -554,8 +562,11 @@
             .join('')}</tbody></table>`
         : '';
     const stamp = over && view.winners && view.winners.length ? `<p class="winner-stamp">${esc(fixYou(C52.Engine.andList(view.winners.map((w) => view.names[w])) + (view.winners.length > 1 ? ' win' : ' wins')))}</p>` : '';
+    const isGuest = C52.Online && C52.Online.isGuest();
     const buttons = over
-      ? `<button class="btn primary" id="db-again">Deal again</button><button class="btn ghost" id="db-leave">Leave the table</button>`
+      ? isGuest
+        ? `<p class="slip-line">Waiting for the host to deal again…</p><button class="btn ghost" id="db-leave">Leave the table</button>`
+        : `<button class="btn primary" id="db-again">Deal again</button><button class="btn ghost" id="db-leave">Leave the table</button>`
       : next
       ? `<button class="btn primary" id="db-next">${s.nextLabel || 'Next round'}</button><button class="btn ghost" id="db-pad">Scorepad</button>`
       : `<p class="slip-line">Waiting for the host to deal the next round…</p>`;
@@ -567,8 +578,8 @@
         const q = (id) => el.querySelector(id);
         if (q('#db-next')) q('#db-next').onclick = () => submit(next);
         if (q('#db-pad')) q('#db-pad').onclick = () => openPad('scores');
-        if (q('#db-again')) q('#db-again').onclick = () => C52.UI.show('table', R.params);
-        if (q('#db-leave')) q('#db-leave').onclick = () => C52.UI.show('menu', { brief: R.game });
+        if (q('#db-again')) q('#db-again').onclick = () => (C52.Online && C52.Online.isHost() ? C52.Online.restart() : C52.UI.show('table', R.params));
+        if (q('#db-leave')) q('#db-leave').onclick = () => (C52.Online && (C52.Online.isHost() || C52.Online.isGuest()) ? confirmLeave() : C52.UI.show('menu', { brief: R.game }));
       }
     );
     o.dataset.kind = 'debrief';
@@ -646,7 +657,7 @@
     if (params.guest) {
       // Online guest: views arrive from the host over the network.
       R.me = params.guest.seat;
-      R.submit = (a) => C52.Net && C52.Net.sendAction(a);
+      R.submit = (a) => C52.Online.guestSend(a);
       return;
     }
     R.submit = (a) => Host.act(R.me, a);
@@ -656,7 +667,7 @@
     };
     Host.listeners = [listener];
     unlisten = () => (Host.listeners = []);
-    Host.start(params.game, params.seats, params.options || {});
+    Host.start(params.game, params.seats, params.options || {}, params.restore || null);
   }
 
   function leave() {

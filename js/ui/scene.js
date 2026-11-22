@@ -20,6 +20,7 @@
         <div class="vignette"></div>
         <div class="grain"></div>
         <p class="subtitle" id="subtitle" role="status" aria-live="polite"></p>
+        <div class="notice" id="notice" role="status" aria-live="polite"></div>
         <button class="house-btn" id="house-btn" aria-label="The House: venue, deck and sound" title="The House">52</button>
         <aside class="drawer" id="drawer" aria-label="The House" aria-hidden="true"></aside>
       </div>`
@@ -85,6 +86,28 @@
     el.textContent = text;
     el.classList.add('on');
     subtitleTimer = setTimeout(() => el.classList.remove('on'), ms || Math.max(2600, text.length * 70));
+  }
+
+  /* ---------- notices (online status, countdowns) ---------- */
+
+  let noticeTimer = 0;
+  let noticeId = '';
+  /** Show a notice under the top line. opts: { ms, sticky, id } */
+  function notice(html, opts) {
+    const o = opts || {};
+    const el = $('#notice');
+    if (!el) return;
+    clearTimeout(noticeTimer);
+    noticeId = o.id || '';
+    el.innerHTML = html;
+    el.classList.add('on');
+    if (!o.sticky) noticeTimer = setTimeout(() => el.classList.remove('on'), o.ms || 5000);
+  }
+  /** Hide the notice (only if it is the one with this id, when an id is given). */
+  function clearNotice(id) {
+    const el = $('#notice');
+    if (!el || (id && id !== noticeId)) return;
+    el.classList.remove('on');
   }
 
   /* ---------- the House drawer ---------- */
@@ -164,7 +187,7 @@
   }
 
   C52.Scene = {
-    mount, cardHTML, fan, subtitle, toggleDrawer, $,
+    mount, cardHTML, fan, subtitle, toggleDrawer, $, notice, clearNotice,
     /** Add a drawer section: html(prefs) -> markup; wire(el) binds elements with data-wire=name. */
     addDrawerSection(html, name, wire) {
       drawerSections.push(html);

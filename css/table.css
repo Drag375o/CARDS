@@ -241,3 +241,17 @@
 .trick-card.dummy-play { cursor: pointer; }
 .trick-card.dummy-play .card { filter: drop-shadow(0 0 8px rgba(255, 214, 150, 0.7)); }
 .trick-card.dummy-play:hover { transform: translate(-50%, calc(-50% - 10px)); }
+
+/* ---------- notices (online) ---------- */
+
+.notice {
+  position: absolute; top: 58px; left: 50%; transform: translate(-50%, -8px); z-index: 55;
+  max-width: min(680px, 92vw); padding: 10px 16px; border-radius: 4px; text-align: center;
+  background: rgba(239, 231, 212, 0.96); color: #231d15; font: 13.5px/1.5 var(--font-ui);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45); opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s;
+}
+.notice.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.notice b { letter-spacing: 0.06em; }
+.notice .dim { color: #7a6b52; }
+.notice-btn { margin-left: 8px; padding: 3px 10px; border: 1px solid #231d15; background: transparent; border-radius: 2px; cursor: pointer; font: 500 11px var(--font-ui); letter-spacing: 0.08em; }
+.room-code { display: inline-block; margin: 2px 0 10px; padding: 4px 12px; border: 2px solid #231d15; font: 700 26px var(--font-type); letter-spacing: 0.3em; }

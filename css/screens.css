@@ -132,3 +132,14 @@
   .briefing-card { width: 110px; }
   .slip { width: 88vw; padding: 20px; }
 }
+
+/* ---------- saved online game ---------- */
+
+.saved-card {
+  position: absolute; top: 64px; left: 50%; transform: translateX(-50%); z-index: 26;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center;
+  padding: 12px 18px; background: #efe7d4; color: #231d15; box-shadow: 0 12px 26px rgba(0, 0, 0, 0.5); font: 13px var(--font-type);
+}
+.saved-card b { font: 600 15px var(--font-display); }
+.saved-card .btn { padding: 7px 12px; }
+.slip .opt input[type='text'] { font: 14px var(--font-type); padding: 5px 8px; border: 1px solid rgba(35, 29, 21, 0.35); background: #faf6ec; }
