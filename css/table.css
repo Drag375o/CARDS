@@ -256,3 +256,16 @@
 .notice .dim { color: #7a6b52; }
 .notice-btn { margin-left: 8px; padding: 3px 10px; border: 1px solid #231d15; background: transparent; border-radius: 2px; cursor: pointer; font: 500 11px var(--font-ui); letter-spacing: 0.08em; }
 .room-code { display: inline-block; margin: 2px 0 10px; padding: 4px 12px; border: 2px solid #231d15; font: 700 26px var(--font-type); letter-spacing: 0.3em; }
+
+/* ---------- whose turn ---------- */
+
+.my-plaque.on .plaque { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 26px rgba(255, 214, 150, 0.35); }
+.turn-flag {
+  position: absolute; left: 50%; bottom: calc(var(--card-h) + 10px); z-index: 31; transform: translate(-50%, 6px);
+  padding: 4px 14px; border-radius: 12px; background: var(--accent); color: #1a1208;
+  font: 600 11px var(--font-ui); letter-spacing: 0.22em; text-transform: uppercase;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s;
+}
+.turn-flag.on { opacity: 1; transform: translate(-50%, 0); animation: turn-breathe 2.4s ease-in-out infinite; }
+@keyframes turn-breathe { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 214, 150, 0.0); } 50% { box-shadow: 0 0 18px 2px rgba(255, 214, 150, 0.45); } }
+[data-game='klondike'] .turn-flag, [data-game='ers'] .turn-flag { display: none; }

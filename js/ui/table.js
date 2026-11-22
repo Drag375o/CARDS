@@ -199,6 +199,7 @@
         <button class="chip-btn" id="rules">Rules</button>
       </div>
       <div class="my-plaque" id="myplaque"></div>
+      <div class="turn-flag" id="turnflag" aria-live="polite">Your turn</div>
       <div class="hand" id="hand"></div>
       <div class="rail" id="rail"></div>
       <div class="overlay" id="overlay"></div>`;
@@ -244,6 +245,9 @@
       })
       .join('');
     $('#myplaque').innerHTML = seatPlaque(view, R.me);
+    const myTurn = R.actions.length > 0 && view.phase !== 'roundover' && view.phase !== 'gameover';
+    $('#myplaque').classList.toggle('on', myTurn);
+    $('#turnflag').classList.toggle('on', myTurn);
 
     // Lamp toward the active seat.
     if (view.turn != null) {
@@ -379,10 +383,29 @@
     cardChosen(el.dataset.card);
   }
 
+  /** Say why a click did nothing, so a waiting turn never feels like a broken mouse. */
+  let lastNudge = 0;
+  function nudge(text) {
+    if (Date.now() - lastNudge < 1200) return;
+    lastNudge = Date.now();
+    C52.Scene.subtitle(fixYou(text), 2200);
+    C52.Sound.play('brush');
+  }
+  function whyNot(code, spec) {
+    const v = R.view;
+    if (v.phase === 'roundover' || v.phase === 'gameover') return;
+    if (!R.actions.length) {
+      const who = v.turn != null && v.turn !== R.me ? v.names[v.turn] : null;
+      return nudge(who ? `It's ${who}'s turn. Wait for yours.` : 'Waiting for the other players.');
+    }
+    if (spec.playable.size) return nudge("You can't play that card now.");
+    nudge('Use the buttons on the right.');
+  }
+
   function cardChosen(code) {
     const spec = handSpec();
     if (spec.multi) {
-      if (!spec.playable.has(code) && !R.selection.has(code)) return;
+      if (!spec.playable.has(code) && !R.selection.has(code)) return whyNot(code, spec);
       if (R.selection.has(code)) R.selection.delete(code);
       else {
         if (spec.max && R.selection.size >= spec.max) return;
@@ -392,7 +415,7 @@
       draw();
       return;
     }
-    if (!spec.playable.has(code)) return;
+    if (!spec.playable.has(code)) return whyNot(code, spec);
     const T = R.T;
     const res = T.onCard ? T.onCard(code, R.view, R.actions, ui) : null;
     if (res && res.chooser) return openChooser(res.chooser);
