@@ -10,10 +10,25 @@ The mood is a 1960s spy thriller: low light, green baize, the snap of a fresh de
 >
 > **Status:** all twelve games are playable against computer opponents and online. Six venues, six decks and seven card backs are available.
 
+![Hearts in the Riviera Salon](docs/screenshots/hearts.jpg)
+
+---
+
+## Screenshots
+
+| | |
+|---|---|
+| ![Cold open](docs/screenshots/cold-open.jpg) **Cold open:** cut the deck to begin | ![Choosing a game](docs/screenshots/menu.jpg) **The games** are dealt to you as a hand |
+| ![A briefing](docs/screenshots/briefing.jpg) **A briefing** for each game | ![Seating](docs/screenshots/seating.jpg) **Set the table:** chairs and house rules |
+| ![Texas Hold'em](docs/screenshots/holdem.jpg) **Texas Hold'em** on the flop | ![Blackjack](docs/screenshots/blackjack.jpg) **Blackjack** against the house |
+| ![Klondike](docs/screenshots/klondike.jpg) **Klondike** on its own card table | ![Bridge auction](docs/screenshots/bridge-auction.jpg) **Contract Bridge:** the auction |
+| ![Big Two](docs/screenshots/bigtwo.jpg) **Big Two:** beat the last play | ![The House](docs/screenshots/the-house.jpg) **The House:** venue, deck, back and sound |
+
 ---
 
 ## Contents
 
+- [Screenshots](#screenshots)
 - [The games](#the-games)
 - [Ways to play](#ways-to-play)
 - [House rules we use](#house-rules-we-use)
@@ -234,6 +249,11 @@ Change either from **The House** (the gold "52" button, top right) at any time, 
 | **Night Train** | A dining car crossing the Alps | Burgundy velvet and inlaid wood, a swaying lamp, village lights passing the window | The rhythm of the rails and a distant whistle |
 | **The Vault** | A Swiss bank's private room | Pale banknote paper with engraved guilloché rings, a great round steel door | A heavy clock and the hum of the vault |
 
+| | | |
+|---|---|---|
+| ![The Lair](docs/screenshots/venue-lair.jpg) **The Lair** | ![Noir '62](docs/screenshots/venue-noir62.jpg) **Noir '62** | ![Mayfair Bar](docs/screenshots/venue-mayfair.jpg) **Mayfair Bar** |
+| ![Night Train](docs/screenshots/venue-nighttrain.jpg) **Night Train** | ![The Vault](docs/screenshots/venue-vault.jpg) **The Vault** | ![Riviera Salon](docs/screenshots/hearts.jpg) **Riviera Salon** |
+
 ### Decks
 
 | Deck | Based on | Look |
@@ -244,6 +264,8 @@ Change either from **The House** (the gold "52" button, top right) at any time, 
 | **Silhouette** | Silhouette icons | Solid black cards with white indices; royals are bold white emblems (crown, tiara, feathered cap) |
 | **Ink Line** | Line-icon set | Outline-only pips and line-drawn royals in profile. Minimal and very readable. |
 | **Pastel** | Die-cut sticker card | Peach faces, dusty rose and graphite pips, a thick white die-cut border |
+
+![The six decks, each with its suggested back](docs/screenshots/decks.jpg)
 
 **Card backs** can also be chosen on their own: red lattice, blue lattice, engraved guilloché, monogram, noir, mauve, or the venue's own back.
 
@@ -462,6 +484,7 @@ CARDS/
 │       ├── table.js           # the game table: host + renderer
 │       ├── online.js          # online rooms, lobby, takeovers, resume/rejoin
 │       └── app.js             # boot and test links
+├── docs/screenshots/          # pictures used in this README
 ├── tools/deck-preview.html    # every card of every deck
 ├── .nojekyll                  # tells GitHub Pages to serve files as-is (keep it)
 ├── tests/                     # headless Node tests (no dependencies)
