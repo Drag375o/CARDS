@@ -4,6 +4,8 @@ Twelve card games, one standard 52-card deck, all in the browser.
 
 Play solo, against computer opponents, or online with friends using a room code. There is nothing to install and no account to make. Every game follows its full traditional rules, including the edge cases.
 
+The mood is a 1960s spy thriller: low light, green baize, the snap of a fresh deck, chips sliding across felt. You pick the room you play in and the deck you play with, and you can change either at any time.
+
 > **Status:** in development. See the [Roadmap](#roadmap) for what's playable so far.
 
 ---
@@ -13,7 +15,9 @@ Play solo, against computer opponents, or online with friends using a room code.
 - [The games](#the-games)
 - [Ways to play](#ways-to-play)
 - [House rules we use](#house-rules-we-use)
-- [The deck and table design](#the-deck-and-table-design)
+- [Venues and decks](#venues-and-decks)
+- [Look and feel](#look-and-feel)
+- [Sound](#sound)
 - [What every game screen shows](#what-every-game-screen-shows)
 - [Playing online](#playing-online)
 - [Computer opponents](#computer-opponents)
@@ -201,22 +205,114 @@ Many of these games have regional variants, and the rulebook asks for one clearl
 
 ---
 
-## The deck and table design
+## Venues and decks
 
-Every card is drawn in code as **SVG**. There are no image files to download, and cards stay sharp at any size. The look is based on six reference styles, and each one is a table style you can choose in Settings:
+Two choices change the whole look, and they are independent of each other:
 
-| Style | Based on | Look |
-|-------|----------|------|
-| **Casino** *(default)* | Classic full deck + table scene | Green felt, a wooden rail and red lattice card backs. Traditional double-headed courts with red and gold robes, and classic pip layouts. |
-| **Engraved** | Vintage woodcut sheet | Teal ink (`#1E5A53`) on pale green paper (`#DFECB7`), with hatched, engraved-look courts and a diamond-lattice back. |
-| **Storybook** | Cartoon court deck | Rounded corners, decorative pip arrangements and soft, chibi-style Jacks, Queens and Kings. |
-| **Noir** | Silhouette icons | Solid black cards with white indices and symbols, on a charcoal table. |
-| **Ink Line** | Line-icon set | Minimal outline cards with a crown symbol for royals. Calm and high contrast. |
-| **Sticker** | Die-cut sticker card | Cream table, a white die-cut border with a drop shadow, mauve backs and peach faces. |
+- **Venue:** the room you're playing in. It sets the table surface, lighting, background, typography, the ambient sound and the reverb on every sound effect.
+- **Deck:** the cards themselves. It sets the faces, the court artwork, the pip layouts and the card back.
 
-**Table layout:** following the table-scene reference, your own hand is fanned at the bottom of the screen. Opponents sit around the table with their cards face down. The stock, discard pile, community cards and tricks sit in the middle of the felt.
+Change either from the menu at any time, even mid-hand. The table re-dresses itself without interrupting play. Each venue suggests a deck, but any deck works in any venue.
+
+### Venues
+
+| Venue | Setting | Table | Ambience |
+|-------|---------|-------|----------|
+| **Riviera Salon** *(default)* | A private room at a 1960s seaside casino | Deep green baize, a brass rail, warm chandelier glow | A murmuring room, a distant roulette wheel, a hushed string quartet |
+| **The Lair** | A villain's private table, carved into volcanic rock | Black glass lit red from below, brushed steel edges | A low machine hum and water moving somewhere behind the walls |
+| **Noir '62** | A back room after midnight, in black and white | Worn felt crossed by stripes of light through venetian blinds | Rain on the window, a ceiling fan, a muted trumpet two floors down |
+| **Mayfair Bar** | A modern cocktail bar after closing | Polished walnut and leather under amber back-lit shelves | Ice in a glass, a shaker, low lounge music |
+| **Night Train** | A dining car crossing the Alps | Burgundy velvet and inlaid wood under a swaying lamp | The steady rhythm of the rails and the occasional whistle |
+| **The Vault** | A Swiss bank's private room | Pale banknote paper with fine engraved line work | A ticking clock and the heavy hum of the vault |
+
+### Decks
+
+| Deck | Based on | Look |
+|------|----------|------|
+| **Classic** | Traditional full deck | White faces, red and black pips, double-headed courts in red, gold and blue robes |
+| **Engraved** | Vintage woodcut sheet | Teal ink (`#1E5A53`) on pale green (`#DFECB7`), hatched courts and a fine diamond-lattice back, like a banknote |
+| **Storybook** | Cartoon court deck | Rounded corners, decorative pip patterns and soft, illustrated royals |
+| **Silhouette** | Silhouette icons | Solid black cards with white indices. Stark and graphic. |
+| **Ink Line** | Line-icon set | Outline-only faces with a crown mark for royals. Minimal and very readable. |
+| **Pastel** | Die-cut sticker card | Peach faces, mauve backs and a white die-cut border |
+
+Card backs can also be chosen on their own: red lattice, blue lattice, engraved guilloché, monogram, or the venue's own back.
+
+All card art is drawn in code as **SVG**. There are no image files to download, and cards stay sharp at any size.
 
 **Readability options:** a four-colour suit option (♦ blue, ♣ green), large corner indices, and reduced motion.
+
+---
+
+## Look and feel
+
+The game should feel like sitting down at a real table in a film, not filling in a form.
+
+**Everything happens at the table.**
+
+1. **Cold open.** A deck is shuffled and squared in the dark, and the title comes up.
+2. **Choose a game.** The twelve games are dealt to you as a fanned hand. Lift a card to read its briefing (players, length, what it's about), then play it to sit down.
+3. **Set the table.** Empty chairs sit around the table. Tap a chair to seat a computer player and choose how strong it is, or leave it open for a friend online. House rules sit on a small folded card on the table. Tap it to change them.
+4. **Play.**
+5. **Debrief.** Results arrive as a typed slip: scores, the key hand, and a stamp for the winner. From there you can deal again or leave the table.
+
+**No dashboards.** Information lives on the table where a player would expect it:
+
+- Each seat has a small name plaque. A pool of lamplight shows whose turn it is.
+- Chips are real stacks. Tricks are taken and stacked in front of whoever won them. The dealer button is a physical puck that moves around the table.
+- Scores are kept in pencil on a scorepad at the edge of the table. Open it for the full history.
+- A single **subtitle line** at the bottom narrates what happens, like captions in a film: *"North leads the king of spades."* Older lines scroll into the ledger.
+
+**Your hand is first-person.** Your cards are fanned at the bottom of the screen as if you're holding them. The moves you can make appear on a slim action rail beside your hand. You can tap, drag or use the keyboard.
+
+**Cards move like cards.** They are dealt in arcs with a slight spin, settle with a little weight, and flip in perspective. A reduced-motion setting replaces all of this with simple fades.
+
+**Phones get their own layout.** In portrait the table is viewed from above, and your hand sits in the thumb zone at the bottom.
+
+---
+
+## Sound
+
+The sound design is restrained and close-up, like a card scene in a 1960s spy film. Every sound is something you would actually hear at a high-stakes table, with short music stings in the style of period spy jazz. There are no cartoon boings, arcade coins or fanfares.
+
+**Table sounds**
+
+| Moment | Sound |
+|--------|-------|
+| Shuffle | A riffle, then the cards cascading back together, then the deck squared with a tap on the felt |
+| Cut | A soft lift and set-down |
+| Deal | Each card slides across the felt, panned toward the seat it's going to |
+| Draw / pick up | A card drawn off the stock |
+| Play a card | A crisp landing. Playing to a trick is softer than slapping down a meld. |
+| Flip / reveal | A short, clean snap |
+| Take a trick | The cards swept together and squared |
+| Chips | A light clink for a bet, a heavier stack pushed in for a raise, a whole stack shoved for all-in, and the pot raked to the winner |
+| Blackjack shoe | A card slid out of the dealing shoe |
+| Bridge bidding | The click of a card from a bidding box |
+| Slap (Egyptian Rat Screw) | A flat palm on felt: firm, not comic |
+
+**Cues**
+
+| Moment | Sound |
+|--------|-------|
+| Your turn | A lighter lid flicking open |
+| Time running low | A wristwatch ticking |
+| Menu | A soft felt brush on hover and a small metal latch on select |
+
+**Stings.** These are short phrases built on the minor-major ninth "spy chord", using vibraphone, a twangy baritone guitar, brushed snare and muted brass:
+
+- **Win:** a short, cool resolution.
+- **Loss:** a low string swell that falls away.
+- **Big moments:** a fuller phrase for a royal flush, a grand slam, shooting the moon or a Klondike clear.
+
+**How it works.** All sound is generated live with the Web Audio API, so there are no audio files to download.
+
+- Card and chip sounds are built from shaped noise and short resonances.
+- Stings come from small synthesised instruments: plucked strings for the guitar, FM synthesis for the vibraphone, filtered pads for the brass.
+- Each venue sets its own reverb, so a card lands differently in the Vault than on the Night Train.
+- Every sound varies slightly in pitch and timing, so repeated deals never sound mechanical.
+
+**Mixer.** There are separate volume levels for Effects, Music and Ambience, plus a master mute. Sound pauses when the tab is hidden.
 
 ---
 
@@ -289,7 +385,7 @@ CARDS/
 ├── index.html              # app shell and the order scripts load in
 ├── css/
 │   ├── base.css            # layout, table, hand fan, animations
-│   └── themes/             # casino, engraved, storybook, noir, inkline, sticker
+│   └── venues/             # riviera, lair, noir62, mayfair, nighttrain, vault
 ├── js/
 │   ├── core/
 │   │   ├── cards.js        # card model, deck building, secure shuffle
@@ -302,10 +398,14 @@ CARDS/
 │   │   └── bigtwo.js   ers.js         ohhell.js     twentyfive.js
 │   ├── ai/                 # computer players, one file per game
 │   ├── art/
-│   │   ├── faces.js        # SVG pip layouts, indices, card backs
-│   │   └── courts/         # J/Q/K artwork for each theme
+│   │   ├── cardsvg.js      # shared card geometry, pip layouts, indices
+│   │   ├── decks/          # classic, engraved, storybook, silhouette, inkline, pastel
+│   │   └── backs.js        # card back patterns
 │   ├── net.js              # online rooms (PeerJS)
-│   ├── sound.js            # Web Audio sound effects (no audio files)
+│   ├── audio/
+│   │   ├── mixer.js        # volume buses, venue reverb, mute
+│   │   ├── foley.js        # shuffle, deal, flip, chips, slap...
+│   │   └── stings.js       # spy-jazz music stings
 │   └── ui/                 # screens, table rendering, input, saves
 ├── tests/                  # headless Node tests (no dependencies)
 ├── Rules_Modes.md          # the full rulebook for all 12 games
@@ -375,8 +475,10 @@ The game is a static site, so any static host works.
 Each item is committed and pushed on its own as it's finished.
 
 - [ ] Card engine: card model, deck, shuffle, card-location tracking
-- [ ] SVG card faces and backs: Casino style
-- [ ] Table screen, hand fan and game menu
+- [ ] SVG card faces and backs: Classic deck
+- [ ] Venue system + Riviera Salon
+- [ ] Sound engine: shuffle, deal, flip, chips, cues
+- [ ] Cold open, game hand menu and table seating
 - [ ] 03 Klondike Solitaire
 - [ ] 02 Blackjack
 - [ ] 08 Crazy Eights
@@ -391,15 +493,17 @@ Each item is committed and pushed on its own as it's finished.
 - [ ] 07 Contract Bridge
 - [ ] Computer players: Easy / Medium / Hard
 - [ ] Online rooms
-- [ ] Remaining table styles: Engraved, Storybook, Noir, Ink Line, Sticker
-- [ ] Sound, settings and accessibility options
+- [ ] Remaining decks: Engraved, Storybook, Silhouette, Ink Line, Pastel
+- [ ] Remaining venues: The Lair, Noir '62, Mayfair Bar, Night Train, The Vault
+- [ ] Music stings and venue ambience
+- [ ] Settings and accessibility options
 - [ ] Test suite and hosting
 
 ---
 
 ## Credits
 
-- The card and table styles are based on reference artwork from [Vecteezy.com](https://www.vecteezy.com). All card art in this repository is original SVG drawn for the project. The reference files themselves are not distributed here.
+- The deck designs are based on reference artwork from [Vecteezy.com](https://www.vecteezy.com). All card art in this repository is original SVG drawn for the project. The reference files themselves are not distributed here.
 - Online play uses [PeerJS](https://peerjs.com/).
 
 ## Disclaimer
