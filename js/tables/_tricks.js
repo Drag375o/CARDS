@@ -34,7 +34,7 @@
   /** Trump indicator: the turned card in a corner of the felt. */
   function trumpCard(v, ui, card, label) {
     return (
-      ui.pile(14, 50, { top: card, depth: false, label: label || 'Trump' }) +
+      ui.pile(25, 44, { top: card, depth: false, label: label || "Trump" }) +
       ''
     );
   }
