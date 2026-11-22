@@ -1,0 +1,216 @@
+/* 52 Cards — base layout. Venue files (css/venues/*.css) set the tokens
+ * below under [data-venue="…"] and paint .backdrop; nothing here should
+ * hard-code a venue's colours. */
+
+:root {
+  --bg: #0b0806;
+  --ink: #efe6d2;
+  --ink-dim: rgba(239, 230, 210, 0.62);
+  --accent: #c9a24a;
+  --accent-ink: #1a1208;
+  --danger: #c0453a;
+  --felt-1: #1f6b46;
+  --felt-2: #145236;
+  --felt-3: #0b3523;
+  --rail-1: #5a3420;
+  --rail-2: #26150c;
+  --rail-line: #c9a24a;
+  --panel: rgba(12, 9, 7, 0.9);
+  --panel-line: rgba(201, 162, 74, 0.28);
+  --lamp: rgba(255, 214, 150, 0.22);
+
+  --font-display: 'Bodoni Moda', 'Didot', Georgia, serif;
+  --font-ui: 'Jost', 'Futura', 'Avenir Next', system-ui, sans-serif;
+  --font-caption: 'Cormorant Garamond', Georgia, serif;
+  --font-type: 'Courier Prime', 'Courier New', monospace;
+
+  --card-w: clamp(54px, 9.2vmin, 124px);
+  --card-h: calc(var(--card-w) * 1.4);
+  --ease: cubic-bezier(0.2, 0.75, 0.2, 1);
+  --tilt: 16deg;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button { font: inherit; color: inherit; }
+
+/* ---------- scene ---------- */
+
+#scene { position: fixed; inset: 0; overflow: hidden; }
+.backdrop { position: absolute; inset: 0; background: var(--bg); transition: background 0.8s var(--ease); }
+.backdrop::before, .backdrop::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
+.vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 75% 70% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.72) 100%);
+}
+#stage { position: absolute; inset: 0; }
+
+/* Film grain, very faint, over everything. */
+.grain {
+  position: absolute; inset: -50%; pointer-events: none; opacity: 0.07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); } 20% { transform: translate(-3%, 2%); } 40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); } 80% { transform: translate(3%, 3%); } 100% { transform: translate(0, 0); }
+}
+
+/* ---------- table ---------- */
+
+.table-wrap {
+  position: absolute; left: 50%; top: 44%;
+  width: min(94vw, 1180px, 165vh); aspect-ratio: 2 / 1.08;
+  transform: translate(-50%, -50%);
+  perspective: 1500px;
+}
+.table {
+  position: absolute; inset: 0;
+  border-radius: 50% / 50%;
+  transform: rotateX(var(--tilt));
+  transform-style: preserve-3d;
+  transition: transform 0.8s var(--ease);
+}
+/* Rail: wood with a fine metal inlay, drawn as layered borders. */
+.table::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(180deg, var(--rail-1), var(--rail-2));
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(0, 0, 0, 0.6), inset 0 2px 1px rgba(255, 255, 255, 0.12);
+}
+.felt {
+  position: absolute; inset: 4.2%; border-radius: inherit;
+  background: radial-gradient(ellipse 70% 65% at 50% 42%, var(--felt-1) 0%, var(--felt-2) 58%, var(--felt-3) 100%);
+  box-shadow: inset 0 0 0 2px var(--rail-line), inset 0 0 0 5px rgba(0, 0, 0, 0.35), inset 0 18px 60px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+.felt::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; opacity: 0.22; mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='turbulence' baseFrequency='1.4' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+}
+/* Pool of lamplight on the felt; .lamp-at moves it toward the active seat. */
+.felt::before {
+  content: ''; position: absolute; width: 60%; height: 70%; left: var(--lamp-x, 20%); top: var(--lamp-y, 10%);
+  background: radial-gradient(ellipse at center, var(--lamp), transparent 65%);
+  transition: left 0.9s var(--ease), top 0.9s var(--ease);
+  pointer-events: none;
+}
+.felt-mark {
+  position: absolute; left: 50%; top: 74%; transform: translate(-50%, -50%);
+  font-family: var(--font-display); font-style: italic; font-size: clamp(14px, 2.6vmin, 30px);
+  letter-spacing: 0.3em; color: var(--rail-line); opacity: 0.35; white-space: nowrap; pointer-events: none;
+}
+.zone { position: absolute; }
+
+/* ---------- cards ---------- */
+
+.card {
+  position: absolute; width: var(--card-w); height: var(--card-h);
+  transition: transform 0.45s var(--ease), filter 0.2s;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35)) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+  will-change: transform;
+}
+.card svg { width: 100%; height: 100%; display: block; }
+.card.pile-depth { filter: drop-shadow(1px 1px 0 #d8d2c4) drop-shadow(1px 1px 0 #c9c2b2) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35)); }
+
+/* ---------- your hand ---------- */
+
+.hand {
+  position: absolute; left: 50%; bottom: calc(var(--card-h) * -0.04);
+  width: 0; height: var(--card-h);
+  z-index: 20;
+}
+.hand .card {
+  left: calc(var(--card-w) / -2); bottom: 0; transform-origin: 50% 140%; cursor: default;
+  transform: translateX(var(--x, 0)) translateY(var(--y, 0)) rotate(var(--r, 0));
+}
+.hand .card.playable { cursor: pointer; }
+.hand .card.playable:hover, .hand .card.playable:focus-visible {
+  transform: translateX(var(--x, 0)) translateY(calc(var(--y, 0px) - var(--card-h) * 0.2)) rotate(var(--r, 0));
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.45)); outline: none;
+}
+.hand .card.muted svg { filter: brightness(0.62) saturate(0.7); }
+.hand .card.selected svg { box-shadow: 0 0 0 3px var(--accent); border-radius: 8px; }
+
+/* ---------- subtitle ---------- */
+
+.subtitle {
+  position: absolute; left: 50%; bottom: calc(var(--card-h) * 1.05 + 18px); transform: translateX(-50%);
+  max-width: min(80vw, 760px); text-align: center; z-index: 30; pointer-events: none;
+  font-family: var(--font-caption); font-style: italic; font-size: clamp(16px, 2.3vmin, 24px);
+  color: #f6efdd; text-shadow: 0 1px 2px #000, 0 0 18px rgba(0, 0, 0, 0.9);
+  opacity: 0; transition: opacity 0.5s;
+}
+.subtitle.on { opacity: 1; }
+
+/* ---------- the house button and drawer ---------- */
+
+.house-btn {
+  position: absolute; top: 18px; right: 18px; z-index: 50;
+  width: 46px; height: 46px; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--accent); background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.4));
+  color: var(--accent); font-family: var(--font-display); font-style: italic; font-size: 17px;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.35), inset 0 0 0 3px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s var(--ease);
+}
+.house-btn:hover { transform: rotate(-12deg) scale(1.05); }
+
+.drawer {
+  position: absolute; top: 0; right: 0; bottom: 0; z-index: 60;
+  width: min(400px, 100vw); padding: 26px 24px 40px; overflow-y: auto;
+  background: var(--panel); backdrop-filter: blur(12px);
+  border-left: 1px solid var(--panel-line);
+  transform: translateX(105%); transition: transform 0.5s var(--ease);
+}
+.drawer.open { transform: none; }
+.drawer h2 {
+  margin: 0 0 4px; font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: 0.04em;
+}
+.drawer .lede { margin: 0 0 22px; color: var(--ink-dim); font-family: var(--font-caption); font-style: italic; font-size: 17px; }
+.drawer h3 {
+  margin: 26px 0 10px; font-size: 11px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent);
+}
+.drawer .close { position: absolute; top: 18px; right: 18px; background: none; border: 0; font-size: 26px; cursor: pointer; color: var(--ink-dim); }
+.choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+.choice {
+  position: relative; padding: 8px 8px 10px; border-radius: 6px; cursor: pointer; text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.03);
+  transition: border-color 0.2s, background 0.2s;
+}
+.choice:hover { border-color: rgba(255, 255, 255, 0.25); }
+.choice[aria-pressed='true'] { border-color: var(--accent); background: rgba(201, 162, 74, 0.08); }
+.choice .label { display: block; margin-top: 8px; font-size: 13px; }
+.choice .sub { display: block; font-size: 11px; color: var(--ink-dim); }
+.swatch { height: 46px; border-radius: 4px; }
+.mini-fan { position: relative; height: 70px; }
+.mini-fan > div { position: absolute; width: 42px; left: calc(50% - 21px); bottom: 0; transform-origin: 50% 130%; }
+.mini-fan svg, .mini-back svg { width: 100%; height: auto; display: block; }
+.mini-back { width: 46px; margin: 0 auto; }
+.toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); font-size: 14px; cursor: pointer; }
+.toggle input { accent-color: var(--accent); width: 18px; height: 18px; }
+
+/* ---------- motion preferences ---------- */
+
+.reduced-motion *, .reduced-motion *::before, .reduced-motion *::after {
+  animation: none !important; transition-duration: 0.01s !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; }
+}
+
+/* ---------- small screens ---------- */
+
+@media (max-aspect-ratio: 4/5) {
+  :root { --card-w: clamp(46px, 13vw, 84px); --tilt: 0deg; }
+  .table-wrap { top: 38%; width: 92vw; aspect-ratio: 1 / 1.25; }
+}
